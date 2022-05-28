@@ -7,18 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58945B362842938000031896 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B352842938000031896 /* Card.swift */; };
+		58945B38284293E300031896 /* GaugeProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B37284293E300031896 /* GaugeProgressStyle.swift */; };
 		5898060F2842905600F5EF0B /* FlashMathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5898060E2842905600F5EF0B /* FlashMathApp.swift */; };
 		589806112842905600F5EF0B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589806102842905600F5EF0B /* ContentView.swift */; };
 		589806132842905B00F5EF0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 589806122842905B00F5EF0B /* Assets.xcassets */; };
 		589806162842905B00F5EF0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 589806152842905B00F5EF0B /* Preview Assets.xcassets */; };
+		5898061D2842908600F5EF0B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5898061C2842908600F5EF0B /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		58945B352842938000031896 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		58945B37284293E300031896 /* GaugeProgressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeProgressStyle.swift; sourceTree = "<group>"; };
 		5898060B2842905600F5EF0B /* FlashMath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashMath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5898060E2842905600F5EF0B /* FlashMathApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashMathApp.swift; sourceTree = "<group>"; };
 		589806102842905600F5EF0B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		589806122842905B00F5EF0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		589806152842905B00F5EF0B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5898061C2842908600F5EF0B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,9 @@
 			children = (
 				5898060E2842905600F5EF0B /* FlashMathApp.swift */,
 				589806102842905600F5EF0B /* ContentView.swift */,
+				5898061C2842908600F5EF0B /* CardView.swift */,
+				58945B352842938000031896 /* Card.swift */,
+				58945B37284293E300031896 /* GaugeProgressStyle.swift */,
 				589806122842905B00F5EF0B /* Assets.xcassets */,
 				589806142842905B00F5EF0B /* Preview Content */,
 			);
@@ -138,7 +147,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				589806112842905600F5EF0B /* ContentView.swift in Sources */,
+				5898061D2842908600F5EF0B /* CardView.swift in Sources */,
 				5898060F2842905600F5EF0B /* FlashMathApp.swift in Sources */,
+				58945B38284293E300031896 /* GaugeProgressStyle.swift in Sources */,
+				58945B362842938000031896 /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
