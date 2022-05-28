@@ -88,6 +88,7 @@ struct CardView: View {
                 }
         )
         .onTapGesture {
+            UISelectionFeedbackGenerator().selectionChanged()
             withAnimation {
                 isAnswerPresented.toggle()
             }
