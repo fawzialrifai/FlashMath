@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
     @State private var cards = [Card]()
     @State private var isEditCardsPresented = false
-    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
+    @State private var cancellableTimer: Cancellable? = nil
     @State private var timeRemaining = 30
     @Environment(\.scenePhase) var scenePhase
     @State private var isGameActive = false
@@ -79,7 +81,7 @@ struct ContentView: View {
                     timeRemaining -= 1
                 }
             } else {
-                timer.upstream.connect().cancel()
+                cancellableTimer?.cancel()
                 isGameActive = false
             }
         }
@@ -116,7 +118,7 @@ struct ContentView: View {
         resetCards()
         timeRemaining = 30
         isGameActive = false
-        timer.upstream.connect().cancel()
+        cancellableTimer?.cancel()
     }
     
     func resetTime() {
@@ -131,13 +133,14 @@ struct ContentView: View {
     func pauseGame() {
         UISelectionFeedbackGenerator().selectionChanged()
         isGameActive = false
-        timer.upstream.connect().cancel()
+        cancellableTimer?.cancel()
     }
     
     func playGame() {
         UISelectionFeedbackGenerator().selectionChanged()
         isGameActive = true
-        timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        timer = Timer.publish(every: 1, on: .main, in: .common)
+        cancellableTimer = timer.connect()
     }
 }
 
