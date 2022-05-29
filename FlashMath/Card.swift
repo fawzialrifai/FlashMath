@@ -9,8 +9,15 @@ import Foundation
 
 struct Card: Identifiable, Codable, Equatable {
     var id = UUID()
-    let question: String
-    let answer: String
+    let firstNumber: Int
+    let secondNumber: Int
+    let product: Int
+    var question: String {
+        "\(firstNumber) × \(secondNumber)"
+    }
+    var answer: String {
+        "\(product)"
+    }
     
-    static let example = Card(question: "2 × 2", answer: "4")
+    //static let example = Card(question: "2 × 2", answer: "4")
 }

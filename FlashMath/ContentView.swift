@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 struct ContentView: View {
     @State private var cards = [Card]()
@@ -14,12 +15,11 @@ struct ContentView: View {
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
     @State private var cancellableTimer: Cancellable? = nil
     @State private var timeRemaining = 30
+    @StateObject var speechRecognizer = SpeechRecognizer()
     @Environment(\.scenePhase) var scenePhase
     @State private var isGameActive = false
     var body: some View {
         ZStack(alignment: .top) {
-            Color.black
-                .ignoresSafeArea()
             VStack {
                 Spacer()
                 HStack(spacing: 32) {
@@ -53,11 +53,11 @@ struct ContentView: View {
                 ZStack {
                     ForEach(cards.reversed()) { card in
                         let index = cards.firstIndex(of: card)!
-                        CardView(card: card) {
+                        CardView(card: card, speechTranscript: index == 0 ? speechRecognizer.integerTranscript : nil) {
                             withAnimation {
                                 removeCard()
                             }
-                        } onAnsweringIncorrectly: {
+                        } onDrag: {
                             withAnimation {
                                 moveCard()
                             }
@@ -67,13 +67,12 @@ struct ContentView: View {
                         .accessibilityHidden(index > 0)
                     }
                 }
-                .allowsHitTesting(timeRemaining > 0 && isGameActive)
                 Spacer()
             }
             .padding()
         }
         .preferredColorScheme(.dark)
-        .onAppear(perform: setupQuestions)
+        .onAppear(perform: resetCards)
         .onReceive(timer) { time in
             guard isGameActive && scenePhase == .active && !isEditCardsPresented && !cards.isEmpty else { return }
             if timeRemaining > 0 {
@@ -83,34 +82,41 @@ struct ContentView: View {
             } else {
                 cancellableTimer?.cancel()
                 isGameActive = false
+                speechRecognizer.stopTranscribing()
             }
         }
     }
     
-    func setupQuestions() {
-        for _ in 1 ... 15 {
-            let firstNumber = Int.random(in: 2...9)
-            let secondNumber = Int.random(in: 2...9)
-            let card = Card(question: "\(firstNumber) × \(secondNumber)", answer: String(firstNumber * secondNumber))
-            cards.append(card)
-        }
+    func moveCard() {
+        cards.move(fromOffsets: [0], toOffset: cards.count)
+        speechRecognizer.stopTranscribing()
+        speechRecognizer.transcribe()
     }
         
     func removeCard() {
         cards.remove(at: 0)
         if cards.isEmpty {
             isGameActive = false
+        } else {
+            speechRecognizer.stopTranscribing()
+            speechRecognizer.transcribe()
         }
     }
     
-    func moveCard() {
-        cards.move(fromOffsets: [0], toOffset: cards.count)
+    func playGame() {
+        UISelectionFeedbackGenerator().selectionChanged()
+        isGameActive = true
+        timer = Timer.publish(every: 1, on: .main, in: .common)
+        cancellableTimer = timer.connect()
+        speechRecognizer.reset()
+        speechRecognizer.transcribe()
     }
     
-    func restartGame() {
-        resetCards()
-        resetTime()
-        playGame()
+    func pauseGame() {
+        UISelectionFeedbackGenerator().selectionChanged()
+        isGameActive = false
+        cancellableTimer?.cancel()
+        speechRecognizer.pauseTranscribing()
     }
     
     func stopGame() {
@@ -119,29 +125,25 @@ struct ContentView: View {
         timeRemaining = 30
         isGameActive = false
         cancellableTimer?.cancel()
+        speechRecognizer.stopTranscribing()
     }
     
-    func resetTime() {
+    func restartGame() {
+        resetCards()
         timeRemaining = 30
+        playGame()
     }
     
     func resetCards() {
         cards = []
-        setupQuestions()
+        for _ in 1 ... 10 {
+            let firstNumber = Int.random(in: 2...9)
+            let secondNumber = Int.random(in: 2...9)
+            let card = Card(firstNumber: firstNumber, secondNumber: secondNumber, product: firstNumber * secondNumber)
+            cards.append(card)
+        }
     }
     
-    func pauseGame() {
-        UISelectionFeedbackGenerator().selectionChanged()
-        isGameActive = false
-        cancellableTimer?.cancel()
-    }
-    
-    func playGame() {
-        UISelectionFeedbackGenerator().selectionChanged()
-        isGameActive = true
-        timer = Timer.publish(every: 1, on: .main, in: .common)
-        cancellableTimer = timer.connect()
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
