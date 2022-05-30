@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5833D5342843257000708BC8 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5833D5332843257000708BC8 /* SpeechRecognizer.swift */; };
+		58757F0728451DAD006C36B9 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */; };
 		58945B362842938000031896 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B352842938000031896 /* Card.swift */; };
 		58945B38284293E300031896 /* GaugeProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B37284293E300031896 /* GaugeProgressStyle.swift */; };
 		5898060F2842905600F5EF0B /* FlashMathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5898060E2842905600F5EF0B /* FlashMathApp.swift */; };
@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5833D5332843257000708BC8 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		58945B352842938000031896 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		58945B37284293E300031896 /* GaugeProgressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeProgressStyle.swift; sourceTree = "<group>"; };
 		5898060B2842905600F5EF0B /* FlashMath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashMath.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,7 +64,7 @@
 				5898061C2842908600F5EF0B /* CardView.swift */,
 				58945B352842938000031896 /* Card.swift */,
 				58945B37284293E300031896 /* GaugeProgressStyle.swift */,
-				5833D5332843257000708BC8 /* SpeechRecognizer.swift */,
+				58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */,
 				589806122842905B00F5EF0B /* Assets.xcassets */,
 				589806142842905B00F5EF0B /* Preview Content */,
 			);
@@ -149,12 +149,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58757F0728451DAD006C36B9 /* SpeechRecognizer.swift in Sources */,
 				589806112842905600F5EF0B /* ContentView.swift in Sources */,
 				5898061D2842908600F5EF0B /* CardView.swift in Sources */,
 				5898060F2842905600F5EF0B /* FlashMathApp.swift in Sources */,
 				58945B38284293E300031896 /* GaugeProgressStyle.swift in Sources */,
 				58945B362842938000031896 /* Card.swift in Sources */,
-				5833D5342843257000708BC8 /* SpeechRecognizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,8 +286,8 @@
 				DEVELOPMENT_TEAM = M9H242HW29;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Answer questions with your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Answer questions with your voice.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -317,8 +317,8 @@
 				DEVELOPMENT_TEAM = M9H242HW29;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Answer questions with your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Answer questions with your voice.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

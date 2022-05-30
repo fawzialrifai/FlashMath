@@ -1,6 +1,9 @@
-/*
- See LICENSE folder for this sample’s licensing information.
- */
+//
+//  SpeechRecognizer.swift
+//  FlashMath
+//
+//  Created by Fawzi Rifai on 30/05/2022.
+//
 
 import AVFoundation
 import Foundation
@@ -26,7 +29,7 @@ class SpeechRecognizer: ObservableObject {
     }
     
     @Published var transcript: String = ""
-    var integerTranscript: Int? {
+    var integerTranscript: Int? { // new
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .spellOut
         if let number = Int(transcript.lowercased()) {
@@ -108,14 +111,15 @@ class SpeechRecognizer: ObservableObject {
         }
     }
     
-    /// Stop transcribing audio.
-    func pauseTranscribing() {
+    /// Pause transcribing audio.
+    func pauseTranscribing() { // new
         reset()
     }
     
+    /// Stop transcribing audio.
     func stopTranscribing() {
-        transcript.removeAll()
         reset()
+        transcript.removeAll() // new
     }
     
     /// Reset the speech recognizer.
@@ -150,7 +154,7 @@ class SpeechRecognizer: ObservableObject {
     
     private func speak(_ message: String) {
         transcript = message
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // new
             self.reset()
             self.transcribe()
         }
