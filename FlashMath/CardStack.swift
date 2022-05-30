@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CardStack.swift
 //  FlashMath
 //
 //  Created by Fawzi Rifai on 28/05/2022.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct ContentView: View {
+struct CardStack: View {
     @State private var cards = [Card]()
     @State private var isEditCardsPresented = false
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
@@ -137,7 +137,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        CardStack()
         
     }
 }
