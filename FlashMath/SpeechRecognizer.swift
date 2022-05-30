@@ -10,7 +10,6 @@ import Foundation
 import Speech
 import SwiftUI
 
-/// A helper for transcribing speech to text using SFSpeechRecognizer and AVAudioEngine.
 class SpeechRecognizer: ObservableObject {
     enum RecognizerError: Error {
         case nilRecognizer
@@ -111,18 +110,15 @@ class SpeechRecognizer: ObservableObject {
         }
     }
     
-    /// Pause transcribing audio.
     func pauseTranscribing() { // new
         reset()
     }
     
-    /// Stop transcribing audio.
     func stopTranscribing() {
         reset()
         transcript.removeAll() // new
     }
     
-    /// Reset the speech recognizer.
     func reset() {
         task?.cancel()
         audioEngine?.stop()
