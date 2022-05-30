@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var isEditCardsPresented = false
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
     @State private var cancellableTimer: Cancellable? = nil
-    @State private var timeRemaining = 30
+    @State private var timeRemaining = 60
     @StateObject var speechRecognizer = SpeechRecognizer()
     @Environment(\.scenePhase) var scenePhase
     @State private var isGameActive = false
@@ -25,7 +25,7 @@ struct ContentView: View {
                     Button(action: stopGame) {
                         Image(systemName: "stop.fill")
                     }
-                    ProgressView(value: Double(timeRemaining), total: 30)
+                    ProgressView(value: Double(timeRemaining), total: 60)
                         .progressViewStyle(GaugeProgressStyle())
                         .frame(width: 22, height: 22)
                     if isGameActive {
@@ -53,13 +53,17 @@ struct ContentView: View {
                     ForEach(Array(cards.enumerated()), id: \.element) { item in
                         CardView(card: item.element, speechTranscript: item.offset == cards.count - 1 ? speechRecognizer.integerTranscript : nil, isCorrectAnswerShown: timeRemaining == 0 ? true : false) {
                             withAnimation {
-                                moveCard()
+                                moveCard(from: [item.offset], to: cards.count)
+                            }
+                        } onDragDown: {
+                            withAnimation {
+                                moveCard(from: [item.offset], to: 0)
                             }
                         }
                         .stacked(at: item.offset, in: cards.count)
-                        .allowsHitTesting(item.offset == cards.count - 1)
                     }
                 }
+                Spacer()
                 Spacer()
             }
             .padding()
@@ -80,8 +84,8 @@ struct ContentView: View {
         }
     }
     
-    func moveCard() {
-        cards.move(fromOffsets: [cards.count - 1], toOffset: 0)
+    func moveCard(from offsets: IndexSet, to index: Int) {
+        cards.move(fromOffsets: offsets, toOffset: index)
         if isGameActive {
             speechRecognizer.stopTranscribing()
             speechRecognizer.transcribe()
@@ -107,7 +111,7 @@ struct ContentView: View {
     func stopGame() {
         UISelectionFeedbackGenerator().selectionChanged()
         resetCards()
-        timeRemaining = 30
+        timeRemaining = 60
         isGameActive = false
         cancellableTimer?.cancel()
         speechRecognizer.stopTranscribing()
@@ -115,7 +119,7 @@ struct ContentView: View {
     
     func restartGame() {
         resetCards()
-        timeRemaining = 30
+        timeRemaining = 60
         playGame()
     }
     
@@ -141,6 +145,6 @@ struct ContentView_Previews: PreviewProvider {
 extension View {
     func stacked(at position: Int, in total: Int) -> some View {
         let offset = Double(total - position)
-        return self.offset(x: 0, y: offset * 15)
+        return self.offset(x: 0, y: offset * 20)
     }
 }

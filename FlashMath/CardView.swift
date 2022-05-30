@@ -11,24 +11,14 @@ struct CardView: View {
     @State var card: Card
     var speechTranscript: Int?
     let isCorrectAnswerShown: Bool
-    let onDrag: (() -> Void)
+    let onDragUp: (() -> Void)
+    let onDragDown: (() -> Void)
     @State private var offset = CGSize.zero
     var body: some View {
         ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 20)
                 .fill(card.answer == nil ? .white : card.answer == card.correctAnswer ? .blue : .red)
                 .shadow(radius: 4)
-            if card.answer != nil {
-                if card.answer == card.correctAnswer {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title)
-                        .padding()
-                } else {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title)
-                        .padding()
-                }
-            }
             VStack {
                 Text(card.question)
                     .font(.largeTitle.bold())
@@ -42,6 +32,7 @@ struct CardView: View {
                     } else {
                         Text("_")
                             .font(.title)
+                            .foregroundStyle(.white)
                     }
                 }
             }
@@ -59,8 +50,10 @@ struct CardView: View {
                     offset = gesture.translation
                 }
                 .onEnded { gesture in
-                    if abs(offset.width) > 250 || offset.height > 200 {
-                        onDrag()
+                    if abs(offset.width) > 200 || offset.height > 200 {
+                        onDragDown()
+                    } else if offset.height < -200 {
+                        onDragUp()
                     }
                     offset = .zero
                 }
@@ -76,7 +69,7 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(card: .example, isCorrectAnswerShown: false, onDrag: {})
+        CardView(card: .example, isCorrectAnswerShown: false, onDragUp: {}, onDragDown: {})
             .previewLayout(.sizeThatFits)
             .previewInterfaceOrientation(.portrait)
     }
