@@ -5,10 +5,7 @@
 //  Created by Fawzi Rifai on 30/05/2022.
 //
 
-import AVFoundation
-import Foundation
 import Speech
-import SwiftUI
 
 class SpeechRecognizer: ObservableObject {
     enum RecognizerError: Error {
