@@ -17,6 +17,7 @@ struct CardStack: View {
     @StateObject var speechRecognizer = SpeechRecognizer()
     @Environment(\.scenePhase) var scenePhase
     @State private var isGameActive = false
+    @State private var isAlertPresented = false
     var body: some View {
         ZStack(alignment: .top) {
             VStack {
@@ -82,6 +83,11 @@ struct CardStack: View {
                 speechRecognizer.stopTranscribing()
             }
         }
+        .alert("Cannot Access the Microphone or Speech Recognization", isPresented: $isAlertPresented) {
+            Button("OK") {}
+        } message: {
+            Text("Please allow FlashMath access the microphone and speech recognization from Settings.")
+        }
     }
     
     func moveCard(from offsets: IndexSet, to index: Int) {
@@ -93,12 +99,16 @@ struct CardStack: View {
     }
     
     func playGame() {
-        UISelectionFeedbackGenerator().selectionChanged()
-        isGameActive = true
-        timer = Timer.publish(every: 1, on: .main, in: .common)
-        cancellableTimer = timer.connect()
-        speechRecognizer.reset()
-        speechRecognizer.transcribe()
+        if speechRecognizer.isAuthorized {
+            UISelectionFeedbackGenerator().selectionChanged()
+            isGameActive = true
+            timer = Timer.publish(every: 1, on: .main, in: .common)
+            cancellableTimer = timer.connect()
+            speechRecognizer.reset()
+            speechRecognizer.transcribe()
+        } else {
+            isAlertPresented = true
+        }
     }
     
     func pauseGame() {

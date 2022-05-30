@@ -35,6 +35,9 @@ class SpeechRecognizer: ObservableObject {
         }
         return nil
     }
+    var isAuthorized: Bool {
+        AVAudioSession.sharedInstance().recordPermission == .granted && SFSpeechRecognizer.authorizationStatus() == .authorized
+    }
     
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
