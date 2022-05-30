@@ -1,6 +1,6 @@
 /*
-See LICENSE folder for this sample’s licensing information.
-*/
+ See LICENSE folder for this sample’s licensing information.
+ */
 
 import AVFoundation
 import Foundation
@@ -71,10 +71,10 @@ class SpeechRecognizer: ObservableObject {
     }
     
     /**
-        Begin transcribing audio.
+     Begin transcribing audio.
      
-        Creates a `SFSpeechRecognitionTask` that transcribes speech to text until you call `stopTranscribing()`.
-        The resulting transcription is continuously written to the published `transcript` property.
+     Creates a `SFSpeechRecognitionTask` that transcribes speech to text until you call `stopTranscribing()`.
+     The resulting transcription is continuously written to the published `transcript` property.
      */
     func transcribe() {
         DispatchQueue(label: "Speech Recognizer Queue", qos: .background).async { [weak self] in
@@ -151,8 +151,8 @@ class SpeechRecognizer: ObservableObject {
     private func speak(_ message: String) {
         transcript = message
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.reset()
-                self.transcribe()
+            self.reset()
+            self.transcribe()
         }
     }
     

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-import AVFoundation
 
 struct ContentView: View {
     @State private var cards = [Card]()
@@ -30,9 +29,9 @@ struct ContentView: View {
                         .progressViewStyle(GaugeProgressStyle())
                         .frame(width: 22, height: 22)
                     if isGameActive {
-                            Button(action: pauseGame) {
-                                Image(systemName: "pause.fill")
-                            }
+                        Button(action: pauseGame) {
+                            Image(systemName: "pause.fill")
+                        }
                     } else {
                         if timeRemaining == 0 || cards.isEmpty {
                             Button(action: restartGame) {
@@ -51,20 +50,14 @@ struct ContentView: View {
                 .padding()
                 .padding()
                 ZStack {
-                    ForEach(cards.reversed()) { card in
-                        let index = cards.firstIndex(of: card)!
-                        CardView(card: card, speechTranscript: index == 0 ? speechRecognizer.integerTranscript : nil) {
-                            withAnimation {
-                                removeCard()
-                            }
-                        } onDrag: {
+                    ForEach(Array(cards.enumerated()), id: \.element) { item in
+                        CardView(card: item.element, speechTranscript: item.offset == cards.count - 1 ? speechRecognizer.integerTranscript : nil, isCorrectAnswerShown: timeRemaining == 0 ? true : false) {
                             withAnimation {
                                 moveCard()
                             }
                         }
-                        .stacked(at: index)
-                        .allowsHitTesting(index == 0)
-                        .accessibilityHidden(index > 0)
+                        .stacked(at: item.offset, in: cards.count)
+                        .allowsHitTesting(item.offset == cards.count - 1)
                     }
                 }
                 Spacer()
@@ -88,16 +81,8 @@ struct ContentView: View {
     }
     
     func moveCard() {
-        cards.move(fromOffsets: [0], toOffset: cards.count)
-        speechRecognizer.stopTranscribing()
-        speechRecognizer.transcribe()
-    }
-        
-    func removeCard() {
-        cards.remove(at: 0)
-        if cards.isEmpty {
-            isGameActive = false
-        } else {
+        cards.move(fromOffsets: [cards.count - 1], toOffset: 0)
+        if isGameActive {
             speechRecognizer.stopTranscribing()
             speechRecognizer.transcribe()
         }
@@ -139,7 +124,7 @@ struct ContentView: View {
         for _ in 1 ... 10 {
             let firstNumber = Int.random(in: 2...9)
             let secondNumber = Int.random(in: 2...9)
-            let card = Card(firstNumber: firstNumber, secondNumber: secondNumber, product: firstNumber * secondNumber)
+            let card = Card(firstNumber: firstNumber, secondNumber: secondNumber, operation: Operation.allCases.randomElement()!)
             cards.append(card)
         }
     }
@@ -149,13 +134,13 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            
+        
     }
 }
 
 extension View {
-    func stacked(at position: Int) -> some View {
-        let offset = Double(position)
+    func stacked(at position: Int, in total: Int) -> some View {
+        let offset = Double(total - position)
         return self.offset(x: 0, y: offset * 15)
     }
 }

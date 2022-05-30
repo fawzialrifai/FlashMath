@@ -8,38 +8,45 @@
 import SwiftUI
 
 struct CardView: View {
-    let card: Card
-    var speechTranscript: Int? = nil
-    let onAnsweringCorrectly: (() -> Void)
+    @State var card: Card
+    var speechTranscript: Int?
+    let isCorrectAnswerShown: Bool
     let onDrag: (() -> Void)
     @State private var offset = CGSize.zero
     var body: some View {
         ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 20)
-                .fill(speechTranscript == nil ? .white : card.product == speechTranscript ? .blue : .red)
+                .fill(card.answer == nil ? .white : card.answer == card.correctAnswer ? .blue : .red)
                 .shadow(radius: 4)
-            if card.product == speechTranscript {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.title)
-                    .padding()
-            } else {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.title)
-                    .padding()
+            if card.answer != nil {
+                if card.answer == card.correctAnswer {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title)
+                        .padding()
+                } else {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title)
+                        .padding()
+                }
             }
             VStack {
                 Text(card.question)
                     .font(.largeTitle.bold())
-                if let answer = speechTranscript {
-                    Text(answer, format: .number)
+                if isCorrectAnswerShown {
+                    Text(card.correctAnswer, format: .number)
                         .font(.title)
                 } else {
-                    Text("_")
-                        .font(.title)
+                    if let answer = card.answer {
+                        Text(answer, format: .number)
+                            .font(.title)
+                    } else {
+                        Text("_")
+                            .font(.title)
+                    }
                 }
             }
-            .foregroundColor(speechTranscript == nil ? .black : .white)
-            .padding()
+            .animation(nil, value: isCorrectAnswerShown)
+            .foregroundColor(card.answer == nil ? .black : .white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .multilineTextAlignment(.center)
         }
@@ -59,21 +66,18 @@ struct CardView: View {
                 }
         )
         .animation(.spring(), value: offset)
-        .transition(.scale)
-        .onChange(of: speechTranscript, perform: { newValue in
-            if card.product == newValue {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    onAnsweringCorrectly()
-                }
+        .onChange(of: speechTranscript) { newValue in
+            if newValue != nil {
+                card.answer = newValue
             }
-        })
+        }
     }
 }
 
-//struct CardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CardView(card: .example)
-//            .previewLayout(.sizeThatFits)
-//            .previewInterfaceOrientation(.portrait)
-//    }
-//}
+struct CardView_Previews: PreviewProvider {
+    static var previews: some View {
+        CardView(card: .example, isCorrectAnswerShown: false, onDrag: {})
+            .previewLayout(.sizeThatFits)
+            .previewInterfaceOrientation(.portrait)
+    }
+}
