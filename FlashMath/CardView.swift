@@ -19,7 +19,7 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(card.answer == nil ? .white : card.answer == card.correctAnswer ? .blue : .red)
                 .shadow(radius: 4)
-            VStack {
+            VStack(spacing: 8) {
                 Text(card.question)
                     .font(.largeTitle.bold())
                 if isCorrectAnswerShown {
@@ -30,9 +30,8 @@ struct CardView: View {
                         Text(answer, format: .number)
                             .font(.title)
                     } else {
-                        Text("_")
+                        Image(systemName: "waveform")
                             .font(.title)
-                            .foregroundStyle(.white)
                     }
                 }
             }
