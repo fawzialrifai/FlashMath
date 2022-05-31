@@ -23,3 +23,10 @@ struct GaugeProgressStyle: ProgressViewStyle {
         }
     }
 }
+
+struct GaugeProgressStyle_Previews: PreviewProvider {
+    static var previews: some View {
+        ProgressView(value: Double(45), total: 60)
+            .progressViewStyle(GaugeProgressStyle())
+    }
+}

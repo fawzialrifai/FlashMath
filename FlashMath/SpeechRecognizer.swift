@@ -25,16 +25,6 @@ class SpeechRecognizer: ObservableObject {
     }
     
     @Published var transcript: String = ""
-    var integerTranscript: Int? { // new
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .spellOut
-        if let number = Int(transcript.lowercased()) {
-            return number
-        } else if let number = numberFormatter.number(from: transcript.lowercased()) {
-            return Int(truncating: number)
-        }
-        return nil
-    }
     var isAuthorized: Bool {
         AVAudioSession.sharedInstance().recordPermission == .granted && SFSpeechRecognizer.authorizationStatus() == .authorized
     }
@@ -69,7 +59,7 @@ class SpeechRecognizer: ObservableObject {
     }
     
     deinit {
-        reset()
+        stopTranscribing()
     }
     
     /**
@@ -104,27 +94,27 @@ class SpeechRecognizer: ObservableObject {
                     }
                 }
             } catch {
-                self.reset()
+                self.stopTranscribing()
                 self.speakError(error)
             }
         }
     }
     
-    func pauseTranscribing() { // new
-        reset()
-    }
-    
     func stopTranscribing() {
-        reset()
-        transcript.removeAll() // new
-    }
-    
-    func reset() {
         task?.cancel()
         audioEngine?.stop()
         audioEngine = nil
         request = nil
         task = nil
+    }
+    
+    func restart() {
+        stopTranscribing()
+        transcribe()
+    }
+    
+    func clearTranscript() {
+        transcript.removeAll()
     }
     
     private static func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
@@ -150,10 +140,6 @@ class SpeechRecognizer: ObservableObject {
     
     private func speak(_ message: String) {
         transcript = message
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // new
-            self.reset()
-            self.transcribe()
-        }
     }
     
     private func speakError(_ error: Error) {

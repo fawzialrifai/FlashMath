@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct CardView: View {
-    @State var card: Card
-    var speechTranscript: Int?
+    let card: Card
     let isCorrectAnswerShown: Bool
     let onDragUp: (() -> Void)
     let onDragDown: (() -> Void)
     @State private var offset = CGSize.zero
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack {
             RoundedRectangle(cornerRadius: 20)
-                .fill(card.answer == nil ? .white : card.answer == card.correctAnswer ? .blue : .red)
+                .fill(card.color)
                 .shadow(radius: 4)
             VStack(spacing: 8) {
                 Text(card.question)
@@ -35,10 +34,8 @@ struct CardView: View {
                     }
                 }
             }
-            .animation(nil, value: isCorrectAnswerShown)
             .foregroundColor(card.answer == nil ? .black : .white)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .multilineTextAlignment(.center)
+            .animation(nil, value: isCorrectAnswerShown)
         }
         .frame(width: 250, height: 200)
         .rotationEffect(.degrees(Double(offset.width / 5)))
@@ -48,7 +45,7 @@ struct CardView: View {
                 .onChanged { gesture in
                     offset = gesture.translation
                 }
-                .onEnded { gesture in
+                .onEnded { _ in
                     if abs(offset.width) > 200 || offset.height > 200 {
                         onDragDown()
                     } else if offset.height < -200 {
@@ -58,11 +55,6 @@ struct CardView: View {
                 }
         )
         .animation(.spring(), value: offset)
-        .onChange(of: speechTranscript) { newValue in
-            if newValue != nil {
-                card.answer = newValue
-            }
-        }
     }
 }
 
@@ -70,6 +62,5 @@ struct CardView_Previews: PreviewProvider {
     static var previews: some View {
         CardView(card: .example, isCorrectAnswerShown: false, onDragUp: {}, onDragDown: {})
             .previewLayout(.sizeThatFits)
-            .previewInterfaceOrientation(.portrait)
     }
 }

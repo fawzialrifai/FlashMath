@@ -10,13 +10,12 @@ import Combine
 
 struct CardStack: View {
     @State private var cards = [Card]()
-    @State private var isEditCardsPresented = false
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
     @State private var cancellableTimer: Cancellable? = nil
     @State private var timeRemaining = 60
     @StateObject var speechRecognizer = SpeechRecognizer()
     @Environment(\.scenePhase) var scenePhase
-    @State private var isGameActive = false
+    @State private var gameStatus = GameStatus.stopped
     @State private var isAlertPresented = false
     var body: some View {
         ZStack(alignment: .top) {
@@ -29,12 +28,12 @@ struct CardStack: View {
                     ProgressView(value: Double(timeRemaining), total: 60)
                         .progressViewStyle(GaugeProgressStyle())
                         .frame(width: 22, height: 22)
-                    if isGameActive {
+                    if gameStatus == .started {
                         Button(action: pauseGame) {
                             Image(systemName: "pause.fill")
                         }
                     } else {
-                        if timeRemaining == 0 || cards.isEmpty {
+                        if gameStatus == .over {
                             Button(action: restartGame) {
                                 Image(systemName: "play.fill")
                                     .scaleEffect(CGSize(width: -1.0, height: 1.0))
@@ -52,7 +51,7 @@ struct CardStack: View {
                 .padding()
                 ZStack {
                     ForEach(Array(cards.enumerated()), id: \.element) { item in
-                        CardView(card: item.element, speechTranscript: item.offset == cards.count - 1 ? speechRecognizer.integerTranscript : nil, isCorrectAnswerShown: timeRemaining == 0 ? true : false) {
+                        CardView(card: item.element, isCorrectAnswerShown: gameStatus == .over ? true : false) {
                             withAnimation {
                                 moveCard(from: [item.offset], to: cards.count)
                             }
@@ -72,15 +71,26 @@ struct CardStack: View {
         .preferredColorScheme(.dark)
         .onAppear(perform: resetCards)
         .onReceive(timer) { time in
-            guard isGameActive && scenePhase == .active && !isEditCardsPresented && !cards.isEmpty else { return }
+            guard gameStatus == .started && scenePhase == .active else { return }
             if timeRemaining > 0 {
                 withAnimation(Animation.linear(duration: 1)) {
                     timeRemaining -= 1
                 }
             } else {
-                cancellableTimer?.cancel()
-                isGameActive = false
-                speechRecognizer.stopTranscribing()
+                endGame()
+            }
+        }
+        .onChange(of: speechRecognizer.transcript) { newValue in
+            let isAnswerCorrect = cards[cards.count - 1].updateAnswer(with: newValue)
+            if isAnswerCorrect {
+                if cards.allSatisfy({ $0.answer == $0.correctAnswer }) {
+                    endGame()
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if gameStatus == .started {
+                    speechRecognizer.restart()
+                }
             }
         }
         .alert("Cannot Access the Microphone or Speech Recognization", isPresented: $isAlertPresented) {
@@ -92,19 +102,15 @@ struct CardStack: View {
     
     func moveCard(from offsets: IndexSet, to index: Int) {
         cards.move(fromOffsets: offsets, toOffset: index)
-        if isGameActive {
-            speechRecognizer.stopTranscribing()
-            speechRecognizer.transcribe()
-        }
+        speechRecognizer.clearTranscript()
     }
     
     func playGame() {
         if speechRecognizer.isAuthorized {
             UISelectionFeedbackGenerator().selectionChanged()
-            isGameActive = true
+            gameStatus = .started
             timer = Timer.publish(every: 1, on: .main, in: .common)
             cancellableTimer = timer.connect()
-            speechRecognizer.reset()
             speechRecognizer.transcribe()
         } else {
             isAlertPresented = true
@@ -113,16 +119,16 @@ struct CardStack: View {
     
     func pauseGame() {
         UISelectionFeedbackGenerator().selectionChanged()
-        isGameActive = false
+        gameStatus = .paused
         cancellableTimer?.cancel()
-        speechRecognizer.pauseTranscribing()
+        speechRecognizer.stopTranscribing()
     }
     
     func stopGame() {
         UISelectionFeedbackGenerator().selectionChanged()
         resetCards()
         timeRemaining = 60
-        isGameActive = false
+        gameStatus = .paused
         cancellableTimer?.cancel()
         speechRecognizer.stopTranscribing()
     }
@@ -131,6 +137,12 @@ struct CardStack: View {
         resetCards()
         timeRemaining = 60
         playGame()
+    }
+    
+    func endGame() {
+        cancellableTimer?.cancel()
+        speechRecognizer.stopTranscribing()
+        gameStatus = .over
     }
     
     func resetCards() {
@@ -157,4 +169,8 @@ extension View {
         let offset = Double(total - position)
         return self.offset(x: 0, y: offset * 20)
     }
+}
+
+enum GameStatus {
+    case started, paused, stopped, over
 }
