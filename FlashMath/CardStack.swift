@@ -18,56 +18,54 @@ struct CardStack: View {
     @State private var gameStatus = GameStatus.stopped
     @State private var isAlertPresented = false
     var body: some View {
-        ZStack(alignment: .top) {
-            VStack {
-                Spacer()
-                HStack(spacing: 32) {
-                    Button(action: stopGame) {
-                        Image(systemName: "stop.fill")
+        VStack {
+            Spacer()
+            HStack(spacing: 32) {
+                Button(action: stopGame) {
+                    Image(systemName: "stop.fill")
+                }
+                ProgressView(value: Double(timeRemaining), total: 60)
+                    .progressViewStyle(GaugeProgressStyle())
+                    .frame(width: 22, height: 22)
+                if gameStatus == .started {
+                    Button(action: pauseGame) {
+                        Image(systemName: "pause.fill")
                     }
-                    ProgressView(value: Double(timeRemaining), total: 60)
-                        .progressViewStyle(GaugeProgressStyle())
-                        .frame(width: 22, height: 22)
-                    if gameStatus == .started {
-                        Button(action: pauseGame) {
-                            Image(systemName: "pause.fill")
+                } else {
+                    if gameStatus == .over {
+                        Button(action: restartGame) {
+                            Image(systemName: "play.fill")
+                                .scaleEffect(CGSize(width: -1.0, height: 1.0))
                         }
                     } else {
-                        if gameStatus == .over {
-                            Button(action: restartGame) {
-                                Image(systemName: "play.fill")
-                                    .scaleEffect(CGSize(width: -1.0, height: 1.0))
-                            }
-                        } else {
-                            Button(action: playGame) {
-                                Image(systemName: "play.fill")
-                            }
+                        Button(action: playGame) {
+                            Image(systemName: "play.fill")
                         }
                     }
                 }
-                .tint(.primary)
-                .font(.largeTitle)
-                .padding()
-                .padding()
-                ZStack {
-                    ForEach(Array(cards.enumerated()), id: \.element) { item in
-                        CardView(card: item.element, isCorrectAnswerShown: gameStatus == .over ? true : false) {
-                            withAnimation {
-                                moveCard(from: [item.offset], to: cards.count)
-                            }
-                        } onDragDown: {
-                            withAnimation {
-                                moveCard(from: [item.offset], to: 0)
-                            }
-                        }
-                        .stacked(at: item.offset, in: cards.count)
-                    }
-                }
-                Spacer()
-                Spacer()
             }
+            .tint(.primary)
+            .font(.largeTitle)
             .padding()
+            .padding()
+            ZStack {
+                ForEach(Array(cards.enumerated()), id: \.element) { item in
+                    CardView(card: item.element, isCorrectAnswerShown: gameStatus == .over ? true : false) {
+                        withAnimation {
+                            moveCard(from: [item.offset], to: cards.count)
+                        }
+                    } onDragDown: {
+                        withAnimation {
+                            moveCard(from: [item.offset], to: 0)
+                        }
+                    }
+                    .stacked(at: item.offset, in: cards.count)
+                }
+            }
+            Spacer()
+            Spacer()
         }
+        .padding()
         .preferredColorScheme(.dark)
         .onAppear(perform: resetCards)
         .onReceive(timer) { time in
