@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		586C839E284625FF0097AA66 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586C839D284625FF0097AA66 /* Game.swift */; };
+		586C83A0284696A40097AA66 /* View-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586C839F284696A30097AA66 /* View-extension.swift */; };
 		58757F0728451DAD006C36B9 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */; };
 		58945B362842938000031896 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B352842938000031896 /* Card.swift */; };
 		58945B38284293E300031896 /* GaugeProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B37284293E300031896 /* GaugeProgressStyle.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		586C839D284625FF0097AA66 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		586C839F284696A30097AA66 /* View-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-extension.swift"; sourceTree = "<group>"; };
 		58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		58945B352842938000031896 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		58945B37284293E300031896 /* GaugeProgressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeProgressStyle.swift; sourceTree = "<group>"; };
@@ -65,6 +69,8 @@
 				58945B37284293E300031896 /* GaugeProgressStyle.swift */,
 				58945B352842938000031896 /* Card.swift */,
 				58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */,
+				586C839D284625FF0097AA66 /* Game.swift */,
+				586C839F284696A30097AA66 /* View-extension.swift */,
 				589806122842905B00F5EF0B /* Assets.xcassets */,
 				589806142842905B00F5EF0B /* Preview Content */,
 			);
@@ -151,7 +157,9 @@
 			files = (
 				58757F0728451DAD006C36B9 /* SpeechRecognizer.swift in Sources */,
 				589806112842905600F5EF0B /* CardStack.swift in Sources */,
+				586C839E284625FF0097AA66 /* Game.swift in Sources */,
 				5898061D2842908600F5EF0B /* CardView.swift in Sources */,
+				586C83A0284696A40097AA66 /* View-extension.swift in Sources */,
 				5898060F2842905600F5EF0B /* FlashMathApp.swift in Sources */,
 				58945B38284293E300031896 /* GaugeProgressStyle.swift in Sources */,
 				58945B362842938000031896 /* Card.swift in Sources */,
