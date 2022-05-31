@@ -80,7 +80,7 @@ struct CardStack: View {
                 endGame()
             }
         }
-        .onChange(of: scenePhase, perform: { _ in
+        .onChange(of: scenePhase) { _ in
             if scenePhase == .active {
                 if gameStatus == .started {
                     speechRecognizer.stopTranscribing()
@@ -90,7 +90,7 @@ struct CardStack: View {
                     speechRecognizer.transcribe()
                 }
             }
-        })
+        }
         .onChange(of: speechRecognizer.transcript) { newValue in
             let isAnswerCorrect = cards[cards.count - 1].updateAnswer(with: newValue)
             if isAnswerCorrect {
