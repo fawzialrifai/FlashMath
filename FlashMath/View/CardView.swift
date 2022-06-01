@@ -22,24 +22,25 @@ struct CardView: View {
             VStack(spacing: 8) {
                 Text(card.question)
                     .font(.largeTitle.bold())
-                if game.status == .over {
-                    Text(card.correctAnswer, format: .number)
-                        .font(.title)
-                } else {
-                    if let answer = card.answer {
-                        Text(answer, format: .number)
-                            .font(.title)
-                    } else {
-                        if game.status == .started {
-                            Text("Answer")
-                                .font(.title)
-                                .foregroundColor(.black.opacity(0.25))
+                Group {
+                    if game.status == .started {
+                        if let answer = card.answer {
+                            Text(answer, format: .number)
+                        } else if game.indexFor(card) == 0 {
+                                Text("Answer")
+                                    .foregroundColor(.black.opacity(0.25))
                         }
+                    } else if game.status == .paused {
+                        if let answer = card.answer {
+                            Text(answer, format: .number)
+                        }
+                    } else if game.status == .over {
+                        Text(card.correctAnswer, format: .number)
                     }
                 }
+                .font(.title)
             }
             .foregroundColor(card.answer == nil ? .black : .white)
-            .animation(nil, value: game.status)
         }
         .frame(width: 250, height: 200)
         .rotationEffect(.degrees(Double(offset.width / 5)))
@@ -63,6 +64,7 @@ struct CardView: View {
                 }
         )
         .animation(.spring(), value: offset)
+        .animation(SwiftUI.Animation.default, value: game.status)
     }
     
 }
