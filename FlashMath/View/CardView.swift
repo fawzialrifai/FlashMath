@@ -30,9 +30,11 @@ struct CardView: View {
                         Text(answer, format: .number)
                             .font(.title)
                     } else {
-                        Text("Answer")
-                            .font(.title)
-                            .foregroundColor(.black.opacity(0.25))
+                        if game.status == .started {
+                            Text("Answer")
+                                .font(.title)
+                                .foregroundColor(.black.opacity(0.25))
+                        }
                     }
                 }
             }
