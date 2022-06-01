@@ -9,9 +9,6 @@ import SwiftUI
 
 struct CardView: View {
     @EnvironmentObject var game: Game
-    @State private var change: CGFloat = 0.1
-    @State private var amplitude: CGFloat = 0.8
-    @State private var phase: CGFloat = 0.0
     let card: Card
     @State private var offset = CGSize.zero
     var body: some View {
@@ -75,4 +72,3 @@ struct CardView_Previews: PreviewProvider {
             .environmentObject(Game())
     }
 }
-
