@@ -41,9 +41,7 @@ import Combine
     
     func updateTime() {
         if timeRemaining > 0 {
-            withAnimation(Animation.linear(duration: 1)) {
-                timeRemaining -= 1
-            }
+            timeRemaining -= 1
         } else {
             end()
         }
@@ -51,7 +49,20 @@ import Combine
     
     func moveCard(from offsets: IndexSet, to index: Int) {
         cards.move(fromOffsets: offsets, toOffset: index)
-        speechRecognizer.clearTranscript()
+    }
+    
+    func moveCardUp(_ card: Card) {
+        if let index = cards.firstIndex(of: card) {
+                cards.move(fromOffsets: [index], toOffset: cards.count)
+                speechRecognizer.clearTranscript()
+        }
+    }
+    
+    func moveCardDown(_ card: Card) {
+        if let index = cards.firstIndex(of: card) {
+                cards.move(fromOffsets: [index], toOffset: 0)
+                speechRecognizer.clearTranscript()
+        }
     }
     
     func start() {

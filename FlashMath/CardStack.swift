@@ -22,6 +22,7 @@ struct CardStack: View {
                 ProgressView(value: Double(game.timeRemaining), total: 60)
                     .progressViewStyle(GaugeProgressStyle())
                     .frame(width: 22, height: 22)
+                    .animation(.linear(duration: 1), value: game.timeRemaining)
                 if game.status == .started {
                     Button {
                         game.pause()
@@ -50,16 +51,9 @@ struct CardStack: View {
             .padding()
             ZStack {
                 ForEach(Array(game.cards.enumerated()), id: \.element) { item in
-                    CardView(card: item.element, isCorrectAnswerShown: game.status == .over ? true : false) {
-                        withAnimation {
-                            game.moveCard(from: [item.offset], to: game.cards.count)
-                        }
-                    } onDragDown: {
-                        withAnimation {
-                            game.moveCard(from: [item.offset], to: 0)
-                        }
-                    }
+                    CardView(card: item.element)
                     .stacked(at: item.offset, in: game.cards.count)
+                    .environmentObject(game)
                 }
             }
             Spacer()

@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct CardView: View {
+    @EnvironmentObject var game: Game
     let card: Card
-    let isCorrectAnswerShown: Bool
-    let onDragUp: (() -> Void)
-    let onDragDown: (() -> Void)
     @State private var offset = CGSize.zero
     var body: some View {
         ZStack {
@@ -21,7 +19,7 @@ struct CardView: View {
             VStack(spacing: 8) {
                 Text(card.question)
                     .font(.largeTitle.bold())
-                if isCorrectAnswerShown {
+                if game.status == .over {
                     Text(card.correctAnswer, format: .number)
                         .font(.title)
                 } else {
@@ -35,7 +33,7 @@ struct CardView: View {
                 }
             }
             .foregroundColor(card.answer == nil ? .black : .white)
-            .animation(nil, value: isCorrectAnswerShown)
+            .animation(nil, value: game.status)
         }
         .frame(width: 250, height: 200)
         .rotationEffect(.degrees(Double(offset.width / 5)))
@@ -47,9 +45,13 @@ struct CardView: View {
                 }
                 .onEnded { _ in
                     if abs(offset.width) > 200 || offset.height > 200 {
-                        onDragDown()
+                        withAnimation {
+                            game.moveCardDown(card)
+                        }
                     } else if offset.height < -200 {
-                        onDragUp()
+                        withAnimation {
+                            game.moveCardUp(card)
+                        }
                     }
                     offset = .zero
                 }
@@ -60,7 +62,7 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(card: .example, isCorrectAnswerShown: false, onDragUp: {}, onDragDown: {})
+        CardView(card: .example)
             .previewLayout(.sizeThatFits)
     }
 }
