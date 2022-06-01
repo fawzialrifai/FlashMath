@@ -42,7 +42,7 @@ struct MultiWave: View {
                 self.change = 0.1
                 return 0.02
             } else if self.amplitude > 0.9 {
-                self.change = -0.1
+                self.change = 0.1
                 return 0.9
             }
             
@@ -66,7 +66,6 @@ struct MultiWave: View {
 struct MultiWave_Previews: PreviewProvider {
     static var previews: some View {
         MultiWave()
-            
     }
 }
 
