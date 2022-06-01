@@ -64,5 +64,6 @@ struct CardView_Previews: PreviewProvider {
     static var previews: some View {
         CardView(card: .example)
             .previewLayout(.sizeThatFits)
+            .environmentObject(Game())
     }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		586C839E284625FF0097AA66 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586C839D284625FF0097AA66 /* Game.swift */; };
+		586C83BE284741F10097AA66 /* ControlButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586C83BD284741F10097AA66 /* ControlButtons.swift */; };
 		58757F0728451DAD006C36B9 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */; };
 		58945B362842938000031896 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B352842938000031896 /* Card.swift */; };
 		58945B38284293E300031896 /* CircleProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58945B37284293E300031896 /* CircleProgressStyle.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		586C839D284625FF0097AA66 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		586C83BD284741F10097AA66 /* ControlButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButtons.swift; sourceTree = "<group>"; };
 		58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		58945B352842938000031896 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		58945B37284293E300031896 /* CircleProgressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressStyle.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				589806102842905600F5EF0B /* CardStack.swift */,
+				586C83BD284741F10097AA66 /* ControlButtons.swift */,
 				5898061C2842908600F5EF0B /* CardView.swift */,
 				58945B37284293E300031896 /* CircleProgressStyle.swift */,
 			);
@@ -175,6 +178,7 @@
 				5898060F2842905600F5EF0B /* FlashMathApp.swift in Sources */,
 				58945B38284293E300031896 /* CircleProgressStyle.swift in Sources */,
 				58945B362842938000031896 /* Card.swift in Sources */,
+				586C83BE284741F10097AA66 /* ControlButtons.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
