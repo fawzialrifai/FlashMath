@@ -18,7 +18,7 @@ struct CardStack: View {
             ZStack {
                 ForEach(game.cards.reversed()) { card in
                     CardView(card: card)
-                        .offset(x: 0, y: CGFloat(game.indexFor(card)) * 20)
+                        .offset(x: 0, y: CGFloat(game.indexFor(card) ?? 0) * 20)
                 }
             }
             Spacer()

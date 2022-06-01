@@ -43,7 +43,7 @@ struct ControlButtons: View {
                 }
             }
         }
-        .tint(.primary)
+        .tint(.white)
         .font(.largeTitle)
     }
 }

@@ -51,8 +51,8 @@ import Combine
         cards.move(fromOffsets: offsets, toOffset: index)
     }
     
-    func indexFor(_ card: Card) -> Int {
-        cards.firstIndex(of: card)!
+    func indexFor(_ card: Card) -> Int? {
+        cards.firstIndex(of: card)
     }
     
     func moveCardUp(_ card: Card) {

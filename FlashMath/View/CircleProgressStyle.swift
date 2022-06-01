@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CircleProgressStyle: ProgressViewStyle {
-    var strokeColor = Color.primary
+    var strokeColor = Color.white
     var strokeWidth = 6.0
     
     func makeBody(configuration: Configuration) -> some View {

@@ -9,6 +9,9 @@ import SwiftUI
 
 struct CardView: View {
     @EnvironmentObject var game: Game
+    @State private var change: CGFloat = 0.1
+    @State private var amplitude: CGFloat = 0.8
+    @State private var phase: CGFloat = 0.0
     let card: Card
     @State private var offset = CGSize.zero
     var body: some View {
@@ -16,6 +19,9 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(card.color)
                 .shadow(radius: 4)
+            if game.status == .started && game.indexFor(card) == 0 {
+                MultiWave(color: card.answer == nil ? .black.opacity(0.25) : .white.opacity(0.25))
+            }
             VStack(spacing: 8) {
                 Text(card.question)
                     .font(.largeTitle.bold())
@@ -27,8 +33,9 @@ struct CardView: View {
                         Text(answer, format: .number)
                             .font(.title)
                     } else {
-                        Image(systemName: "waveform")
+                        Text("Answer")
                             .font(.title)
+                            .foregroundColor(.black.opacity(0.25))
                     }
                 }
             }
@@ -58,6 +65,7 @@ struct CardView: View {
         )
         .animation(.spring(), value: offset)
     }
+    
 }
 
 struct CardView_Previews: PreviewProvider {
@@ -67,3 +75,4 @@ struct CardView_Previews: PreviewProvider {
             .environmentObject(Game())
     }
 }
+
