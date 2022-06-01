@@ -17,7 +17,7 @@ import Combine
     var timerSubscription: Cancellable?
     var speechRecognizer = SpeechRecognizer()
     var speechRecognizerSubscription: AnyCancellable?
-
+    
     init() {
         resetCards()
         speechRecognizerSubscription = speechRecognizer.$transcript.sink {
@@ -26,7 +26,7 @@ import Combine
     }
     
     func speak(_ transcript: String) {
-        let isAnswerCorrect = cards[cards.count - 1].updateAnswer(with: transcript)
+        let isAnswerCorrect = cards[0].updateAnswer(with: transcript)
         if isAnswerCorrect {
             if cards.allSatisfy({ $0.answer == $0.correctAnswer }) {
                 end()
@@ -51,17 +51,21 @@ import Combine
         cards.move(fromOffsets: offsets, toOffset: index)
     }
     
+    func indexFor(_ card: Card) -> Int {
+        cards.firstIndex(of: card)!
+    }
+    
     func moveCardUp(_ card: Card) {
         if let index = cards.firstIndex(of: card) {
-                cards.move(fromOffsets: [index], toOffset: cards.count)
-                speechRecognizer.clearTranscript()
+            cards.move(fromOffsets: [index], toOffset: 0)
+            speechRecognizer.clearTranscript()
         }
     }
     
     func moveCardDown(_ card: Card) {
         if let index = cards.firstIndex(of: card) {
-                cards.move(fromOffsets: [index], toOffset: 0)
-                speechRecognizer.clearTranscript()
+            cards.move(fromOffsets: [index], toOffset: cards.count)
+            speechRecognizer.clearTranscript()
         }
     }
     

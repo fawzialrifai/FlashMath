@@ -1,5 +1,5 @@
 //
-//  GaugeProgressStyle.swift
+//  CircleProgressStyle.swift
 //  FlashMath
 //
 //  Created by Fawzi Rifai on 28/05/2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GaugeProgressStyle: ProgressViewStyle {
+struct CircleProgressStyle: ProgressViewStyle {
     var strokeColor = Color.primary
     var strokeWidth = 6.0
     
@@ -24,9 +24,9 @@ struct GaugeProgressStyle: ProgressViewStyle {
     }
 }
 
-struct GaugeProgressStyle_Previews: PreviewProvider {
+struct CircleProgressStyle_Previews: PreviewProvider {
     static var previews: some View {
         ProgressView(value: Double(45), total: 60)
-            .progressViewStyle(GaugeProgressStyle())
+            .progressViewStyle(CircleProgressStyle())
     }
 }

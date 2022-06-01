@@ -20,7 +20,7 @@ struct CardStack: View {
                     Image(systemName: "stop.fill")
                 }
                 ProgressView(value: Double(game.timeRemaining), total: 60)
-                    .progressViewStyle(GaugeProgressStyle())
+                    .progressViewStyle(CircleProgressStyle())
                     .frame(width: 22, height: 22)
                     .animation(.linear(duration: 1), value: game.timeRemaining)
                 if game.status == .started {
@@ -50,10 +50,10 @@ struct CardStack: View {
             .font(.largeTitle)
             .padding()
             ZStack {
-                ForEach(Array(game.cards.enumerated()), id: \.element) { item in
-                    CardView(card: item.element)
-                    .stacked(at: item.offset, in: game.cards.count)
-                    .environmentObject(game)
+                ForEach(game.cards.reversed()) { card in
+                    CardView(card: card)
+                        .offset(x: 0, y: CGFloat(game.indexFor(card)) * 20)
+                        .environmentObject(game)
                 }
             }
             Spacer()
