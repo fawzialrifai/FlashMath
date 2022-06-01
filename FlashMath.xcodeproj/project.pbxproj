@@ -47,6 +47,7 @@
 		586C83BB28473ECE0097AA66 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				586C839D284625FF0097AA66 /* Game.swift */,
 				58945B352842938000031896 /* Card.swift */,
 				58757F0628451DAD006C36B9 /* SpeechRecognizer.swift */,
 			);
@@ -58,8 +59,8 @@
 			children = (
 				589806102842905600F5EF0B /* CardStack.swift */,
 				586C83BD284741F10097AA66 /* ControlButtons.swift */,
-				5898061C2842908600F5EF0B /* CardView.swift */,
 				58945B37284293E300031896 /* CircleProgressStyle.swift */,
+				5898061C2842908600F5EF0B /* CardView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -84,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				5898060E2842905600F5EF0B /* FlashMathApp.swift */,
-				586C839D284625FF0097AA66 /* Game.swift */,
 				586C83BC28473ED70097AA66 /* View */,
 				586C83BB28473ECE0097AA66 /* Model */,
 				589806122842905B00F5EF0B /* Assets.xcassets */,
