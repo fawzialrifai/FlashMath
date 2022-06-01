@@ -11,20 +11,23 @@ struct CardStack: View {
     @StateObject var game = Game()
     @Environment(\.scenePhase) var scenePhase
     var body: some View {
-        VStack {
-            Spacer()
-            ControlButtons()
-                .padding()
-            ZStack {
-                ForEach(game.cards.reversed()) { card in
-                    CardView(card: card)
-                        .offset(x: 0, y: CGFloat(game.indexFor(card) ?? 0) * 20)
+        ZStack {
+            Color.black
+                .ignoresSafeArea()
+            VStack {
+                Spacer()
+                ControlButtons()
+                    .padding()
+                ZStack {
+                    ForEach(game.cards.reversed()) { card in
+                        CardView(card: card)
+                            .offset(x: 0, y: CGFloat(game.indexFor(card) ?? 0) * 20)
+                    }
                 }
+                Spacer()
+                Spacer()
             }
-            Spacer()
-            Spacer()
         }
-        .padding()
         .preferredColorScheme(.dark)
         .environmentObject(game)
         .onChange(of: scenePhase) { newValue in

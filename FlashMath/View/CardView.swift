@@ -64,7 +64,7 @@ struct CardView: View {
                 }
         )
         .animation(.spring(), value: offset)
-        .animation(SwiftUI.Animation.default, value: game.status)
+        .animation(.default, value: game.status)
     }
     
 }
