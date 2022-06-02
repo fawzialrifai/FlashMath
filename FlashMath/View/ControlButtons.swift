@@ -14,37 +14,37 @@ struct ControlButtons: View {
             Button {
                 game.stop()
             } label: {
-                Image(systemName: "stop.fill")
+                Image(systemName: "stop")
+                    
             }
             ProgressView(value: Double(game.timeRemaining), total: 60)
                 .progressViewStyle(CircleProgressStyle())
-                .frame(width: 22, height: 22)
+                .frame(width: 26, height: 26)
                 .animation(.linear(duration: 1), value: game.timeRemaining)
             if game.status == .started {
                 Button {
                     game.pause()
                 } label: {
-                    Image(systemName: "pause.fill")
+                    Image(systemName: "pause")
                 }
             } else {
                 if game.status == .over {
                     Button {
                         game.restart()
                     } label: {
-                        Image(systemName: "play.fill")
-                            .scaleEffect(CGSize(width: -1.0, height: 1.0))
+                        Image(systemName: "restart")
                     }
                 } else {
                     Button {
                         game.start()
                     } label: {
-                        Image(systemName: "play.fill")
+                        Image(systemName: "play")
                     }
                 }
             }
         }
         .tint(.white)
-        .font(.largeTitle)
+        .font(.largeTitle.bold())
     }
 }
 

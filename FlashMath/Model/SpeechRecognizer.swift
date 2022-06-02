@@ -39,7 +39,7 @@ class SpeechRecognizer: ObservableObject {
      requests access to the speech recognizer and the microphone.
      */
     init() {
-        recognizer = SFSpeechRecognizer()
+        recognizer = SFSpeechRecognizer(locale: Locale.current)
         
         Task(priority: .background) {
             do {

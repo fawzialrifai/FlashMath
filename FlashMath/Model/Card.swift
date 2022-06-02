@@ -29,6 +29,7 @@ struct Card: Identifiable, Hashable {
     mutating func updateAnswer(with newAnswer: String) -> Bool {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .spellOut
+        numberFormatter.locale = Locale.current
         if let number = Int(newAnswer.lowercased()) {
             answer = number
         } else if let number = numberFormatter.number(from: newAnswer.lowercased()) {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CircleProgressStyle: ProgressViewStyle {
     var strokeColor = Color.white
-    var strokeWidth = 6.0
+    var strokeWidth = 4.0
     
     func makeBody(configuration: Configuration) -> some View {
         let fractionCompleted = configuration.fractionCompleted ?? 0
