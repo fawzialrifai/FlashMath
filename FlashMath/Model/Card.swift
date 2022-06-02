@@ -31,8 +31,22 @@ struct Card: Identifiable, Hashable {
         numberFormatter.numberStyle = .spellOut
         numberFormatter.locale = Locale.current
         if let number = Int(newAnswer.lowercased()) {
+            if answer != number {
+                if number == correctAnswer {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                } else {
+                    UINotificationFeedbackGenerator().notificationOccurred(.error)
+                }
+            }
             answer = number
         } else if let number = numberFormatter.number(from: newAnswer.lowercased()) {
+            if answer != Int(truncating: number) {
+                if Int(truncating: number) == correctAnswer {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                } else {
+                    UINotificationFeedbackGenerator().notificationOccurred(.error)
+                }
+            }
             answer = Int(truncating: number)
         }
         if answer == correctAnswer {

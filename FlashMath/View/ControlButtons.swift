@@ -15,7 +15,6 @@ struct ControlButtons: View {
                 game.stop()
             } label: {
                 Image(systemName: "stop")
-                    
             }
             Button {
                 

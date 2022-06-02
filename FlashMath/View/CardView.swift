@@ -51,6 +51,9 @@ struct CardView: View {
                     offset = gesture.translation
                 }
                 .onEnded { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
                     if abs(offset.width) > 200 || offset.height > 200 {
                         withAnimation {
                             game.moveCardDown(card)
