@@ -17,10 +17,15 @@ struct ControlButtons: View {
                 Image(systemName: "stop")
                     
             }
-            ProgressView(value: Double(game.timeRemaining), total: 60)
-                .progressViewStyle(CircleProgressStyle())
-                .frame(width: 26, height: 26)
-                .animation(.linear(duration: 1), value: game.timeRemaining)
+            Button {
+                
+            } label: {
+                ProgressView(value: Double(game.timeRemaining), total: 60)
+                    .progressViewStyle(CircleProgressStyle())
+                    .frame(width: 26, height: 26)
+                    .animation(.linear(duration: 1), value: game.timeRemaining)
+            }
+            
             if game.status == .started {
                 Button {
                     game.pause()
