@@ -55,19 +55,16 @@ struct CardView: View {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     }
                     if abs(offset.width) > 200 || offset.height > 200 {
-                        withAnimation {
-                            game.moveCardDown(card)
-                        }
+                        game.moveCardDown(card)
                     } else if offset.height < -200 {
-                        withAnimation {
-                            game.moveCardUp(card)
-                        }
+                        game.moveCardUp(card)
                     }
                     offset = .zero
                 }
         )
         .animation(.spring(), value: offset)
         .animation(.default, value: game.status)
+        .animation(.spring(), value: game.cards)
     }
     
 }

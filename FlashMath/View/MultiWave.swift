@@ -20,7 +20,7 @@ struct MultiWave: View {
             }
         }
         .onAppear {
-            withAnimation(Animation.linear(duration: 0.1)
+            withAnimation(.linear(duration: 0.1)
                 .repeatForever(autoreverses: false)
             ) {
                 self.amplitude = _nextAmplitude()
