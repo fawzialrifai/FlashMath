@@ -54,15 +54,14 @@ import Combine
         }
     }
     
-    func removeOperation(_ operation: Operation) {
-        if let index = operations.firstIndex(of: operation) {
-            operations.remove(at: index)
-            stop()
+    func toggleOperation(_ operation: Operation) {
+        if operations.contains(operation) {
+            if let index = operations.firstIndex(of: operation) {
+                operations.remove(at: index)
+            }
+        } else {
+            operations.append(operation)
         }
-    }
-    
-    func addOperation(_ operation: Operation) {
-        operations.append(operation)
         stop()
     }
     

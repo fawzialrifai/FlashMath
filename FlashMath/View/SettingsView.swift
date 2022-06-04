@@ -12,145 +12,12 @@ struct SettingsView: View {
     @EnvironmentObject var game: Game
     var body: some View {
         NavigationView {
-            List {
-                Section("") {
-                    HStack {
-                        Text("Addition")
-                        Spacer()
-                        Button {
-                            if game.operations.contains(.addition) {
-                                game.removeOperation(.addition)
-                            } else {
-                                game.addOperation(.addition)
-                            }
-                        } label: {
-                            if game.operations.contains(.addition) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.white)
-                                
-                            } else {
-                                Image(systemName: "circle")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                    SettingsCard(operation: .addition, card: game.exambleCards[0])
-                        .listRowInsets(EdgeInsets())
-                        .frame(height: 200)
-                }
-                Section {
-                    HStack {
-                        Text("Subtraction")
-                        Spacer()
-                        Button {
-                            if game.operations.contains(.subtraction) {
-                                game.removeOperation(.subtraction)
-                            } else {
-                                game.addOperation(.subtraction)
-                            }
-                        } label: {
-                            if game.operations.contains(.subtraction) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.white)
-                                
-                            } else {
-                                Image(systemName: "circle")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                    SettingsCard(operation: .subtraction, card: game.exambleCards[1])
-                        .listRowInsets(EdgeInsets())
-                        .frame(height: 200)
-                }
-                Section {
-                    HStack {
-                        Text("Multiplication")
-                        Spacer()
-                        Button {
-                            if game.operations.contains(.multiplication) {
-                                game.removeOperation(.multiplication)
-                            } else {
-                                game.addOperation(.multiplication)
-                            }
-                        } label: {
-                            if game.operations.contains(.multiplication) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.white)
-                                
-                            } else {
-                                Image(systemName: "circle")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                    SettingsCard(operation: .multiplication, card: game.exambleCards[2])
-                        .listRowInsets(EdgeInsets())
-                        .frame(height: 200)
-                }
-                Section {
-                    HStack {
-                        Text("Division")
-                        Spacer()
-                        Button {
-                            if game.operations.contains(.division) {
-                                game.removeOperation(.division)
-                            } else {
-                                game.addOperation(.division)
-                            }
-                        } label: {
-                            if game.operations.contains(.division) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.white)
-                                
-                            } else {
-                                Image(systemName: "circle")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                    SettingsCard(operation: .division, card: game.exambleCards[3])
-                        .listRowInsets(EdgeInsets())
-                        .frame(height: 200)
-                }
-                Section {
-                    HStack {
-                        Text("Negatives")
-                        Spacer()
-                        Button {
-                            game.isNegativesAllowed.toggle()
-                            game.resetExampleCards()
-                            game.stop()
-                        } label: {
-                            if game.isNegativesAllowed {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.white)
-                                
-                            } else {
-                                Image(systemName: "circle")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                    SettingsCard(operation: .division, card: game.exambleCards[4])
-                        .listRowInsets(EdgeInsets())
-                        .frame(height: 200)
-                }
+            Form {
+                OperationSection(operation: .addition, card: game.exambleCards[0])
+                OperationSection(operation: .subtraction, card: game.exambleCards[1])
+                OperationSection(operation: .multiplication, card: game.exambleCards[2])
+                OperationSection(operation: .division, card: game.exambleCards[3])
+                NegativesSection(card: game.exambleCards[4])
             }
             .navigationTitle("Settings")
             .toolbar {
@@ -162,18 +29,55 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-            .preferredColorScheme(.dark)
-            .environmentObject(Game())
+struct OperationSection: View {
+    @EnvironmentObject var game: Game
+    let operation: Operation
+    let card: Card
+    var body: some View {
+        Section("") {
+            CheckmarkToggle(title: operation.name, isOn: game.operations.contains(operation)) {
+                game.toggleOperation(operation)
+            }
+            SettingsCard(card: card)
+        }
+    }
+}
+
+struct NegativesSection: View {
+    @EnvironmentObject var game: Game
+    let card: Card
+    var body: some View {
+        Section("") {
+            CheckmarkToggle(title: "Negatives", isOn: game.isNegativesAllowed) {
+                game.isNegativesAllowed.toggle()
+                game.resetExampleCards()
+                game.stop()
+            }
+            SettingsCard(card: card)
+        }
+    }
+}
+
+struct CheckmarkToggle: View {
+    var title: String
+    var isOn: Bool
+    var action: () -> Void
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Button(action: action) {
+                Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
+                    .font(.title3.bold())
+                    .foregroundStyle(.white)
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
     }
 }
 
 struct SettingsCard: View {
-    let operation: Operation
     let card: Card
-    @EnvironmentObject var game: Game
     var body: some View {
         VStack(spacing: 8) {
             Text(card.question)
@@ -181,8 +85,18 @@ struct SettingsCard: View {
             Text("\(card.correctAnswer)")
                 .font(.title)
         }
-        .foregroundColor(.black)
+        .frame(height: 200)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .foregroundColor(.black)
         .background(.white)
+        .listRowInsets(EdgeInsets())
+    }
+}
+
+struct SettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingsView()
+            .preferredColorScheme(.dark)
+            .environmentObject(Game())
     }
 }
