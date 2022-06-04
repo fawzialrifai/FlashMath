@@ -70,28 +70,40 @@ import Combine
         }
     }
     
-    func speak(_ transcript: String) {
-        let isAnswerCorrect = cards[0].updateAnswer(with: transcript)
-        if isAnswerCorrect {
-            if cards.allSatisfy({ $0.answer == $0.correctAnswer }) {
-                end()
-            }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if self.status == .started {
-                self.speechRecognizer.restart()
+    func resetCards() {
+        cards = []
+        if operations.count > 0 {
+            for _ in 1 ... 10 {
+                if let operation = operations.randomElement() {
+                    cards.append(getRandomCard(for: operation, from: allowedNumbers))
+                }
             }
         }
     }
     
-    func updateTime() {
-        if timeRemaining > 0 {
-            if !isSettingsPresented {
-                timeRemaining -= 1
-            }
+    func resetExampleCards() {
+        exambleCards = []
+        exambleCards.append(getRandomCard(for: .addition, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .subtraction, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .multiplication, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .division, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .addition, from: Array(-10 ... -1)))
+    }
+    
+    func getRandomCard(for operation: Operation, from allowedNumbers: [Int]) -> Card {
+        let firstNumber = allowedNumbers.randomElement() ?? 0
+        var secondNumber: Int
+        if operation == .division {
+            secondNumber = allowedDenominators.randomElement() ?? 1
         } else {
-            end()
+            secondNumber = allowedNumbers.randomElement() ?? 0
         }
+        if operation == .subtraction && !isNegativesAllowed {
+            while firstNumber - secondNumber < 0 {
+                secondNumber = allowedNumbers.randomElement() ?? 0
+            }
+        }
+        return Card(firstNumber: firstNumber, secondNumber: secondNumber, operation: operation)
     }
     
     func indexFor(_ card: Card) -> Int? {
@@ -147,40 +159,31 @@ import Combine
         start()
     }
     
-    func getRandomCard(for operation: Operation, from allowedNumbers: [Int]) -> Card {
-        let firstNumber = allowedNumbers.randomElement() ?? 0
-        var secondNumber: Int
-        if operation == .division {
-            secondNumber = allowedDenominators.randomElement() ?? 1
-        } else {
-            secondNumber = allowedNumbers.randomElement() ?? 0
+    func updateTime() {
+        if timeRemaining > 0 && !isSettingsPresented {
+                timeRemaining -= 1
         }
-        if operation == .subtraction && !isNegativesAllowed {
-            while firstNumber - secondNumber < 0 {
-                secondNumber = allowedNumbers.randomElement() ?? 0
-            }
+        if timeRemaining == 0 {
+            end()
         }
-        return Card(firstNumber: firstNumber, secondNumber: secondNumber, operation: operation)
     }
     
-    func resetCards() {
-        cards = []
-        if operations.count > 0 {
-            for _ in 1 ... 10 {
-                if let operation = operations.randomElement() {
-                    cards.append(getRandomCard(for: operation, from: allowedNumbers))
+    func speak(_ transcript: String) {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .spellOut
+        numberFormatter.locale = Locale.current
+        if let number = Int(transcript.lowercased()) ?? numberFormatter.number(from: transcript.lowercased()) as? Int {
+            if cards[0].checkAnswer(number) == true {
+                if cards.allSatisfy({ $0.answer == $0.correctAnswer }) {
+                    end()
                 }
             }
         }
-    }
-    
-    func resetExampleCards() {
-        exambleCards = []
-        exambleCards.append(getRandomCard(for: .addition, from: allowedNumbers))
-        exambleCards.append(getRandomCard(for: .subtraction, from: allowedNumbers))
-        exambleCards.append(getRandomCard(for: .multiplication, from: allowedNumbers))
-        exambleCards.append(getRandomCard(for: .division, from: allowedNumbers))
-        exambleCards.append(getRandomCard(for: .addition, from: Array(-10 ... -1)))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if self.status == .started {
+                self.speechRecognizer.restart()
+            }
+        }
     }
     
 }

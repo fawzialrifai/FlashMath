@@ -64,6 +64,13 @@ struct CardView: View {
                     offset = .zero
                 }
         )
+        .onChange(of: card.answer) { answer in 
+            if answer == card.correctAnswer {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            } else {
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+            }
+        }
         .animation(.spring(), value: offset)
         .animation(.default, value: game.status)
         .animation(.spring(), value: game.cards)

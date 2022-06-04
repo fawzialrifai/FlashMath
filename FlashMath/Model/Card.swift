@@ -40,34 +40,15 @@ struct Card: Identifiable, Hashable {
             return firstNumber / secondNumber
         }
     }
-    mutating func updateAnswer(with newAnswer: String) -> Bool {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .spellOut
-        numberFormatter.locale = Locale.current
-        if let number = Int(newAnswer.lowercased()) {
-            if answer != number {
-                if number == correctAnswer {
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                } else {
-                    UINotificationFeedbackGenerator().notificationOccurred(.error)
-                }
-            }
-            answer = number
-        } else if let number = numberFormatter.number(from: newAnswer.lowercased()) {
-            if answer != Int(truncating: number) {
-                if Int(truncating: number) == correctAnswer {
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                } else {
-                    UINotificationFeedbackGenerator().notificationOccurred(.error)
-                }
-            }
-            answer = Int(truncating: number)
-        }
-        if answer == correctAnswer {
+    mutating func checkAnswer(_ answer: Int) -> Bool? {
+        if self.answer != answer && answer == correctAnswer {
+            self.answer = answer
             return true
-        } else {
+        } else if self.answer != answer {
+            self.answer = answer
             return false
         }
+        return nil
     }
     var color: Color {
         if answer == nil {
