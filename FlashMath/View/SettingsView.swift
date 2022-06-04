@@ -36,7 +36,9 @@ struct OperationSection: View {
     var body: some View {
         Section("") {
             CheckmarkToggle(title: operation.name, isOn: game.operations.contains(operation)) {
+                UISelectionFeedbackGenerator().selectionChanged()
                 game.toggleOperation(operation)
+                game.stop()
             }
             SettingsCard(card: card)
         }
@@ -49,6 +51,7 @@ struct NegativesSection: View {
     var body: some View {
         Section("") {
             CheckmarkToggle(title: "Negatives", isOn: game.isNegativesAllowed) {
+                UISelectionFeedbackGenerator().selectionChanged()
                 game.isNegativesAllowed.toggle()
                 game.resetExampleCards()
                 game.stop()

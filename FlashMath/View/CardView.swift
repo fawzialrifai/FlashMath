@@ -56,8 +56,10 @@ struct CardView: View {
                     }
                     if abs(offset.width) > 200 || offset.height > 200 {
                         game.moveCardDown(card)
+                        game.speechRecognizer.clearTranscript()
                     } else if offset.height < -200 {
                         game.moveCardUp(card)
+                        game.speechRecognizer.clearTranscript()
                     }
                     offset = .zero
                 }

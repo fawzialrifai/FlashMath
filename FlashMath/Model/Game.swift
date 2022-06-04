@@ -9,8 +9,12 @@ import SwiftUI
 import Combine
 
 @MainActor class Game: ObservableObject {
+    
+    enum GameStatus {
+        case started, paused, stopped, over
+    }
+    
     @Published var cards = [Card]()
-    var exambleCards = [Card]()
     @Published var timeRemaining = 60
     @Published var status = GameStatus.stopped
     @Published var isAlertPresented = false
@@ -20,37 +24,39 @@ import Combine
     var timerSubscription: Cancellable?
     var speechRecognizer = SpeechRecognizer()
     var speechRecognizerSubscription: AnyCancellable?
+    var exambleCards = [Card]()
     var operations: [Operation] = [.addition, .subtraction, .multiplication, .division] {
-        didSet {
-            if let encodedOperations = try? JSONEncoder().encode(operations) {
-                UserDefaults.standard.set(encodedOperations, forKey: "Operations")
-            }
-        }
+        didSet { setOperations() }
     }
+    
     var allowedNumbers: [Int] {
-        if isNegativesAllowed {
-            return Array(-10 ... 10)
-        } else {
-            return Array(0 ... 10)
-        }
+        return isNegativesAllowed ? Array(-10 ... 10) : Array(0 ... 10)
     }
+    
     var allowedDenominators: [Int] {
-        if isNegativesAllowed {
-            return Array(-10 ... -1) + Array(1 ... 10)
-        } else {
-            return Array(1 ... 10)
+        return isNegativesAllowed ? Array(-10 ... -1) + Array(1 ... 10) : Array(1 ... 10)
+    }
+    
+    init() {
+        getOperations()
+        resetCards()
+        resetExampleCards()
+        speechRecognizerSubscription = speechRecognizer.$transcript.sink {
+            self.speak($0)
         }
     }
-    init() {
+    
+    func getOperations() {
         if let encodedOperations = UserDefaults.standard.data(forKey: "Operations") {
             if let decodedOperations = try? JSONDecoder().decode([Operation].self, from: encodedOperations) {
                 operations = decodedOperations
             }
         }
-        resetCards()
-        resetExampleCards()
-        speechRecognizerSubscription = speechRecognizer.$transcript.sink {
-            self.speak($0)
+    }
+    
+    func setOperations() {
+        if let encodedOperations = try? JSONEncoder().encode(operations) {
+            UserDefaults.standard.set(encodedOperations, forKey: "Operations")
         }
     }
     
@@ -62,7 +68,6 @@ import Combine
         } else {
             operations.append(operation)
         }
-        stop()
     }
     
     func speak(_ transcript: String) {
@@ -89,10 +94,6 @@ import Combine
         }
     }
     
-    func moveCard(from offsets: IndexSet, to index: Int) {
-        cards.move(fromOffsets: offsets, toOffset: index)
-    }
-    
     func indexFor(_ card: Card) -> Int? {
         cards.firstIndex(of: card)
     }
@@ -100,14 +101,12 @@ import Combine
     func moveCardUp(_ card: Card) {
         if let index = cards.firstIndex(of: card) {
             cards.move(fromOffsets: [index], toOffset: 0)
-            speechRecognizer.clearTranscript()
         }
     }
     
     func moveCardDown(_ card: Card) {
         if let index = cards.firstIndex(of: card) {
             cards.move(fromOffsets: [index], toOffset: cards.count)
-            speechRecognizer.clearTranscript()
         }
     }
     
@@ -129,9 +128,15 @@ import Combine
     }
     
     func stop() {
+        status = .paused
         resetCards()
         timeRemaining = 60
-        status = .paused
+        timerSubscription?.cancel()
+        speechRecognizer.stopTranscribing()
+    }
+    
+    func end() {
+        status = .over
         timerSubscription?.cancel()
         speechRecognizer.stopTranscribing()
     }
@@ -140,12 +145,6 @@ import Combine
         resetCards()
         timeRemaining = 60
         start()
-    }
-    
-    func end() {
-        timerSubscription?.cancel()
-        speechRecognizer.stopTranscribing()
-        status = .over
     }
     
     func getRandomCard(for operation: Operation, from allowedNumbers: [Int]) -> Card {
@@ -168,8 +167,9 @@ import Combine
         cards = []
         if operations.count > 0 {
             for _ in 1 ... 10 {
-                let operation = operations.randomElement()!
-                cards.append(getRandomCard(for: operation, from: allowedNumbers))
+                if let operation = operations.randomElement() {
+                    cards.append(getRandomCard(for: operation, from: allowedNumbers))
+                }
             }
         }
     }
@@ -182,8 +182,5 @@ import Combine
         exambleCards.append(getRandomCard(for: .division, from: allowedNumbers))
         exambleCards.append(getRandomCard(for: .addition, from: Array(-10 ... -1)))
     }
-}
-
-enum GameStatus {
-    case started, paused, stopped, over
+    
 }
