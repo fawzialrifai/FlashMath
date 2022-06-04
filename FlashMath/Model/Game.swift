@@ -10,19 +10,49 @@ import Combine
 
 @MainActor class Game: ObservableObject {
     @Published var cards = [Card]()
+    var exambleCards = [Card]()
     @Published var timeRemaining = 60
     @Published var status = GameStatus.stopped
     @Published var isAlertPresented = false
+    @Published var isSettingsPresented = false
+    @Published var isNegativesAllowed = true
     var timer = Timer.publish(every: 1, on: .main, in: .common)
     var timerSubscription: Cancellable?
     var speechRecognizer = SpeechRecognizer()
     var speechRecognizerSubscription: AnyCancellable?
-    
+    var operations: [Operation] = [.addition, .subtraction, .multiplication, .division]
+    var allowedNumbers: [Int] {
+        if isNegativesAllowed {
+            return Array(-10 ... 10)
+        } else {
+            return Array(0 ... 10)
+        }
+    }
+    var allowedDenominators: [Int] {
+        if isNegativesAllowed {
+            return Array(-10 ... -1) + Array(1 ... 10)
+        } else {
+            return Array(1 ... 10)
+        }
+    }
     init() {
         resetCards()
+        resetExampleCards()
         speechRecognizerSubscription = speechRecognizer.$transcript.sink {
             self.speak($0)
         }
+    }
+    
+    func removeOperation(_ operation: Operation) {
+        if let index = operations.firstIndex(of: operation) {
+            operations.remove(at: index)
+            stop()
+        }
+    }
+    
+    func addOperation(_ operation: Operation) {
+        operations.append(operation)
+        stop()
     }
     
     func speak(_ transcript: String) {
@@ -109,14 +139,39 @@ import Combine
         status = .over
     }
     
+    func getRandomCard(for operation: Operation, from allowedNumbers: [Int]) -> Card {
+        let firstNumber = allowedNumbers.randomElement()!
+        var secondNumber: Int
+        if operation == .division {
+            secondNumber = allowedDenominators.randomElement()!
+        } else {
+            secondNumber = allowedNumbers.randomElement()!
+        }
+        if operation == .subtraction && !isNegativesAllowed {
+            while firstNumber - secondNumber < 0 {
+                secondNumber = allowedNumbers.randomElement()!
+            }
+        }
+        return Card(firstNumber: firstNumber, secondNumber: secondNumber, operation: operation)
+    }
+    
     func resetCards() {
         cards = []
-        for _ in 1 ... 10 {
-            let firstNumber = Int.random(in: 2...9)
-            let secondNumber = Int.random(in: 2...9)
-            let card = Card(firstNumber: firstNumber, secondNumber: secondNumber, operation: Operation.allCases.randomElement()!)
-            cards.append(card)
+        if operations.count > 0 {
+            for _ in 1 ... 10 {
+                let operation = operations.randomElement()!
+                cards.append(getRandomCard(for: operation, from: allowedNumbers))
+            }
         }
+    }
+    
+    func resetExampleCards() {
+        exambleCards = []
+        exambleCards.append(getRandomCard(for: .addition, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .subtraction, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .multiplication, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .division, from: allowedNumbers))
+        exambleCards.append(getRandomCard(for: .addition, from: Array(-10 ... -1)))
     }
 }
 

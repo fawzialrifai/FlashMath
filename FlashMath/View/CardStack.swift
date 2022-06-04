@@ -46,6 +46,10 @@ struct CardStack: View {
                 game.updateTime()
             }
         })
+        .sheet(isPresented: $game.isSettingsPresented) {
+            SettingsView()
+                .environmentObject(game)
+        }
         .alert("Cannot Access the Microphone or Speech Recognization", isPresented: $game.isAlertPresented) {
             Button("OK") {}
         } message: {

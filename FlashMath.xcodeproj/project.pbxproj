@@ -19,6 +19,7 @@
 		589806132842905B00F5EF0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 589806122842905B00F5EF0B /* Assets.xcassets */; };
 		589806162842905B00F5EF0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 589806152842905B00F5EF0B /* Preview Assets.xcassets */; };
 		5898061D2842908600F5EF0B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5898061C2842908600F5EF0B /* CardView.swift */; };
+		58A2F607284A3A0100612136 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A2F606284A3A0100612136 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		589806122842905B00F5EF0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		589806152842905B00F5EF0B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5898061C2842908600F5EF0B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		58A2F606284A3A0100612136 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				58945B37284293E300031896 /* CircleProgressStyle.swift */,
 				5898061C2842908600F5EF0B /* CardView.swift */,
 				586C83C2284758360097AA66 /* MultiWave.swift */,
+				58A2F606284A3A0100612136 /* SettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 			files = (
 				58757F0728451DAD006C36B9 /* SpeechRecognizer.swift in Sources */,
 				589806112842905600F5EF0B /* CardStack.swift in Sources */,
+				58A2F607284A3A0100612136 /* SettingsView.swift in Sources */,
 				586C839E284625FF0097AA66 /* Game.swift in Sources */,
 				5898061D2842908600F5EF0B /* CardView.swift in Sources */,
 				5898060F2842905600F5EF0B /* FlashMathApp.swift in Sources */,

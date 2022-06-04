@@ -13,7 +13,21 @@ struct Card: Identifiable, Hashable {
     let secondNumber: Int
     let operation: Operation
     var answer: Int? = nil
-    var question: String { "\(firstNumber) \(operation.rawValue) \(secondNumber)" }
+    var question: String {
+        var formattedFirstNumber = String(firstNumber)
+        var formattedSecondsNumber = String(secondNumber)
+        if firstNumber < 0 {
+            formattedFirstNumber = "−\(firstNumber * -1)"
+        }
+        if secondNumber < 0 {
+            if operation == .addition || operation == .subtraction {
+                formattedSecondsNumber = "(−\(secondNumber * -1))"
+            } else {
+                formattedSecondsNumber = "−\(secondNumber * -1)"
+            }
+        }
+        return "\(formattedFirstNumber) \(operation.rawValue) \(formattedSecondsNumber)"
+    }
     var correctAnswer: Int {
         switch operation {
         case .addition:
@@ -22,7 +36,7 @@ struct Card: Identifiable, Hashable {
             return firstNumber - secondNumber
         case .multiplication:
             return firstNumber * secondNumber
-        case .Division:
+        case .division:
             return firstNumber / secondNumber
         }
     }
@@ -73,5 +87,17 @@ enum Operation: String, CaseIterable {
     case addition = "+"
     case subtraction = "−"
     case multiplication = "×"
-    case Division = "÷"
+    case division = "÷"
+    var name: String {
+        switch self {
+        case .addition:
+            return "Addition"
+        case .subtraction:
+            return "Subtraction"
+        case .multiplication:
+            return "Multiplication"
+        case .division:
+            return "Division"
+        }
+    }
 }
