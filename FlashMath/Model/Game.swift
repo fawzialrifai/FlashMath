@@ -112,7 +112,6 @@ import Combine
     
     func start() {
         if speechRecognizer.isAuthorized {
-            UISelectionFeedbackGenerator().selectionChanged()
             timer = Timer.publish(every: 1, on: .main, in: .common)
             timerSubscription = timer.connect()
             status = .started
@@ -123,14 +122,12 @@ import Combine
     }
     
     func pause() {
-        UISelectionFeedbackGenerator().selectionChanged()
         status = .paused
         timerSubscription?.cancel()
         speechRecognizer.stopTranscribing()
     }
     
     func stop() {
-        UISelectionFeedbackGenerator().selectionChanged()
         resetCards()
         timeRemaining = 60
         status = .paused

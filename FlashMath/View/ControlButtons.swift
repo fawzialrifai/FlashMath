@@ -12,6 +12,7 @@ struct ControlButtons: View {
     var body: some View {
         HStack(spacing: 32) {
             Button {
+                UISelectionFeedbackGenerator().selectionChanged()
                 game.stop()
             } label: {
                 Image(systemName: "stop")
@@ -29,6 +30,7 @@ struct ControlButtons: View {
             
             if game.status == .started {
                 Button {
+                    UISelectionFeedbackGenerator().selectionChanged()
                     game.pause()
                 } label: {
                     Image(systemName: "pause")
@@ -36,12 +38,14 @@ struct ControlButtons: View {
             } else {
                 if game.status == .over {
                     Button {
+                        UISelectionFeedbackGenerator().selectionChanged()
                         game.restart()
                     } label: {
                         Image(systemName: "restart")
                     }
                 } else {
                     Button {
+                        UISelectionFeedbackGenerator().selectionChanged()
                         game.start()
                     } label: {
                         Image(systemName: "play")
