@@ -19,6 +19,7 @@ struct ControlButtons: View {
             Button {
                 UISelectionFeedbackGenerator().selectionChanged()
                 game.isSettingsPresented = true
+                game.pause()
             } label: {
                 ProgressView(value: Double(game.timeRemaining), total: 60)
                     .progressViewStyle(CircleProgressStyle())
