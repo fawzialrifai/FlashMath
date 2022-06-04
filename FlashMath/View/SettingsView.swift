@@ -28,7 +28,7 @@ struct SettingsView: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.title3.bold())
                                     .foregroundStyle(.white)
-                                    
+                                
                             } else {
                                 Image(systemName: "circle")
                                     .font(.title3.bold())
@@ -56,7 +56,7 @@ struct SettingsView: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.title3.bold())
                                     .foregroundStyle(.white)
-                                    
+                                
                             } else {
                                 Image(systemName: "circle")
                                     .font(.title3.bold())
@@ -84,7 +84,7 @@ struct SettingsView: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.title3.bold())
                                     .foregroundStyle(.white)
-                                    
+                                
                             } else {
                                 Image(systemName: "circle")
                                     .font(.title3.bold())
@@ -112,7 +112,7 @@ struct SettingsView: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.title3.bold())
                                     .foregroundStyle(.white)
-                                    
+                                
                             } else {
                                 Image(systemName: "circle")
                                     .font(.title3.bold())
@@ -138,7 +138,7 @@ struct SettingsView: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.title3.bold())
                                     .foregroundStyle(.white)
-                                    
+                                
                             } else {
                                 Image(systemName: "circle")
                                     .font(.title3.bold())
@@ -175,14 +175,14 @@ struct SettingsCard: View {
     let card: Card
     @EnvironmentObject var game: Game
     var body: some View {
-            VStack(spacing: 8) {
-                Text(card.question)
-                    .font(.largeTitle.bold())
-                Text("\(card.correctAnswer)")
-                    .font(.title)
-            }
-            .foregroundColor(.black)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.white)
+        VStack(spacing: 8) {
+            Text(card.question)
+                .font(.largeTitle.bold())
+            Text("\(card.correctAnswer)")
+                .font(.title)
+        }
+        .foregroundColor(.black)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.white)
     }
 }

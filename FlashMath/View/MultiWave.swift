@@ -33,29 +33,29 @@ struct MultiWave: View {
                 self.phase -= 1.5
             }
         }
-
+        
     }
     
     private func _nextAmplitude() -> CGFloat {
-            // If the amplitude is too low or too high, cap it and go in the other direction.
-            if self.amplitude <= 0.01 {
-                self.change = 0.1
-                return 0.02
-            } else if self.amplitude > 0.9 {
-                self.change = 0.1
-                return 0.9
-            }
-            
-            // Simply set the amplitude to whatever you need and the view will update itself.
-            let newAmplitude = self.amplitude + (self.change * CGFloat.random(in: 0.3...0.8))
-            return max(0.01, newAmplitude)
+        // If the amplitude is too low or too high, cap it and go in the other direction.
+        if self.amplitude <= 0.01 {
+            self.change = 0.1
+            return 0.02
+        } else if self.amplitude > 0.9 {
+            self.change = 0.1
+            return 0.9
         }
+        
+        // Simply set the amplitude to whatever you need and the view will update itself.
+        let newAmplitude = self.amplitude + (self.change * CGFloat.random(in: 0.3...0.8))
+        return max(0.01, newAmplitude)
+    }
     
     func singleWave(count: Int) -> some View {
         let progress = 1.0 - CGFloat(count) / CGFloat(5)
         let normedAmplitude = (1.5 * progress - 0.8) * self.amplitude
         let alphaComponent = min(1.0, (progress/3.0*2.0) + (1.0/3.0))
-
+        
         return Wave(phase: phase, normedAmplitude: normedAmplitude)
             .stroke(color.opacity(Double(alphaComponent)), lineWidth: 1.5 / CGFloat(count + 1))
     }
@@ -83,11 +83,11 @@ struct Wave: Shape {
     /// The frequency of the sinus wave. The higher the value, the more sinus wave peaks you will have.
     /// Default: 1.5
     var frequency: CGFloat = 1.5
-
+    
     /// The lines are joined stepwise, the more dense you draw, the more CPU power is used.
     /// Default: 1
     var density: CGFloat = 1.0
-
+    
     /// The phase shift that will be applied
     var phase: CGFloat
     

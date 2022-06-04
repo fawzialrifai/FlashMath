@@ -27,8 +27,8 @@ struct CardView: View {
                         if let answer = card.answer {
                             Text(answer, format: .number)
                         } else if game.indexFor(card) == 0 {
-                                Text("Answer")
-                                    .foregroundColor(.black.opacity(0.25))
+                            Text("Answer")
+                                .foregroundColor(.black.opacity(0.25))
                         }
                     } else if game.status == .paused {
                         if let answer = card.answer {

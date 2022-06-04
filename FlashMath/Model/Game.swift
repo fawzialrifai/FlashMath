@@ -42,11 +42,11 @@ import Combine
         }
     }
     init() {
-            if let encodedOperations = UserDefaults.standard.data(forKey: "Operations") {
-                if let decodedOperations = try? JSONDecoder().decode([Operation].self, from: encodedOperations) {
-                    operations = decodedOperations
-                }
+        if let encodedOperations = UserDefaults.standard.data(forKey: "Operations") {
+            if let decodedOperations = try? JSONDecoder().decode([Operation].self, from: encodedOperations) {
+                operations = decodedOperations
             }
+        }
         resetCards()
         resetExampleCards()
         speechRecognizerSubscription = speechRecognizer.$transcript.sink {
