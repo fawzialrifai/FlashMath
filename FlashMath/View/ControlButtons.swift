@@ -20,15 +20,12 @@ struct ControlButtons: View {
             Button {
                 UISelectionFeedbackGenerator().selectionChanged()
                 game.isSettingsPresented = true
-                game.pause()
             } label: {
                 ProgressView(value: Double(game.timeRemaining), total: 60)
                     .progressViewStyle(CircleProgressStyle())
                     .frame(width: 26, height: 26)
-                    .animation(.linear(duration: 1), value: game.timeRemaining)
             }
-            
-            if game.status == .started {
+            if game.status == .started && !game.isSettingsPresented {
                 Button {
                     UISelectionFeedbackGenerator().selectionChanged()
                     game.pause()
@@ -55,6 +52,9 @@ struct ControlButtons: View {
         }
         .tint(.white)
         .font(.largeTitle.bold())
+        .animation(.linear(duration: 1), value: game.timeRemaining)
+        .animation(.default, value: game.isSettingsPresented)
+        .animation(.default, value: game.status)
     }
 }
 

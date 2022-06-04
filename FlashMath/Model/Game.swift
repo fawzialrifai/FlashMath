@@ -82,7 +82,9 @@ import Combine
     
     func updateTime() {
         if timeRemaining > 0 {
-            timeRemaining -= 1
+            if !isSettingsPresented {
+                timeRemaining -= 1
+            }
         } else {
             end()
         }

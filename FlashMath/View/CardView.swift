@@ -16,7 +16,7 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(card.color)
                 .shadow(radius: 4)
-            if game.status == .started && game.indexFor(card) == 0 {
+            if game.status == .started && game.indexFor(card) == 0 && !game.isSettingsPresented {
                 MultiWave(color: card.answer == nil ? .black.opacity(0.25) : .white.opacity(0.25))
             }
             VStack(spacing: 8) {
@@ -26,7 +26,7 @@ struct CardView: View {
                     if game.status == .started {
                         if let answer = card.answer {
                             Text(answer, format: .number)
-                        } else if game.indexFor(card) == 0 {
+                        } else if game.indexFor(card) == 0 && !game.isSettingsPresented {
                             Text("Answer")
                                 .foregroundColor(.black.opacity(0.25))
                         }
@@ -65,6 +65,7 @@ struct CardView: View {
         .animation(.spring(), value: offset)
         .animation(.default, value: game.status)
         .animation(.spring(), value: game.cards)
+        .animation(.default, value: game.isSettingsPresented)
     }
     
 }
