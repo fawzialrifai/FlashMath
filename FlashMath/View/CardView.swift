@@ -51,15 +51,19 @@ struct CardView: View {
                     offset = gesture.translation
                 }
                 .onEnded { _ in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    }
-                    if abs(offset.width) > 200 || offset.height > 200 {
-                        game.moveCardDown(card)
-                        game.speechRecognizer.clearTranscript()
-                    } else if offset.height < -200 {
-                        game.moveCardUp(card)
-                        game.speechRecognizer.clearTranscript()
+                    game.speechRecognizer.clearTranscript()
+                    withAnimation(.spring()) {
+                        if abs(offset.width) > 200 || offset.height > 200 {
+                            game.moveCardDown(card)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            }
+                        } else if offset.height < -200 {
+                            game.moveCardUp(card)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            }
+                        }
                     }
                     offset = .zero
                 }
@@ -73,7 +77,6 @@ struct CardView: View {
         }
         .animation(.spring(), value: offset)
         .animation(.default, value: game.status)
-        .animation(.spring(), value: game.cards)
         .animation(.default, value: game.isSettingsPresented)
     }
     

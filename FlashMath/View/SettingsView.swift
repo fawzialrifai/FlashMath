@@ -13,6 +13,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
+                Section {}
                 OperationSection(operation: .addition, card: game.exambleCards[0])
                 OperationSection(operation: .subtraction, card: game.exambleCards[1])
                 OperationSection(operation: .multiplication, card: game.exambleCards[2])
@@ -34,7 +35,7 @@ struct OperationSection: View {
     let operation: Operation
     let card: Card
     var body: some View {
-        Section("") {
+        Section {
             CheckmarkToggle(title: operation.name, isOn: game.operations.contains(operation)) {
                 UISelectionFeedbackGenerator().selectionChanged()
                 game.toggleOperation(operation)
@@ -49,7 +50,7 @@ struct NegativesSection: View {
     @EnvironmentObject var game: Game
     let card: Card
     var body: some View {
-        Section("") {
+        Section {
             CheckmarkToggle(title: "Negatives", isOn: game.isNegativesAllowed) {
                 UISelectionFeedbackGenerator().selectionChanged()
                 game.isNegativesAllowed.toggle()
