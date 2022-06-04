@@ -148,16 +148,16 @@ import Combine
     }
     
     func getRandomCard(for operation: Operation, from allowedNumbers: [Int]) -> Card {
-        let firstNumber = allowedNumbers.randomElement()!
+        let firstNumber = allowedNumbers.randomElement() ?? 0
         var secondNumber: Int
         if operation == .division {
-            secondNumber = allowedDenominators.randomElement()!
+            secondNumber = allowedDenominators.randomElement() ?? 1
         } else {
-            secondNumber = allowedNumbers.randomElement()!
+            secondNumber = allowedNumbers.randomElement() ?? 0
         }
         if operation == .subtraction && !isNegativesAllowed {
             while firstNumber - secondNumber < 0 {
-                secondNumber = allowedNumbers.randomElement()!
+                secondNumber = allowedNumbers.randomElement() ?? 0
             }
         }
         return Card(firstNumber: firstNumber, secondNumber: secondNumber, operation: operation)
