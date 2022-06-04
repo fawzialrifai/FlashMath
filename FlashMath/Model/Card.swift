@@ -83,7 +83,7 @@ struct Card: Identifiable, Hashable {
     static let example = Card(firstNumber: 2, secondNumber: 3, operation: .addition)
 }
 
-enum Operation: String, CaseIterable {
+enum Operation: String, CaseIterable, Codable {
     case addition = "+"
     case subtraction = "−"
     case multiplication = "×"

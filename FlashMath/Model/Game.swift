@@ -15,12 +15,18 @@ import Combine
     @Published var status = GameStatus.stopped
     @Published var isAlertPresented = false
     @Published var isSettingsPresented = false
-    @Published var isNegativesAllowed = true
+    @AppStorage("isNegativesAllowed") var isNegativesAllowed = true
     var timer = Timer.publish(every: 1, on: .main, in: .common)
     var timerSubscription: Cancellable?
     var speechRecognizer = SpeechRecognizer()
     var speechRecognizerSubscription: AnyCancellable?
-    var operations: [Operation] = [.addition, .subtraction, .multiplication, .division]
+    var operations: [Operation] = [.addition, .subtraction, .multiplication, .division] {
+        didSet {
+            if let encodedOperations = try? JSONEncoder().encode(operations) {
+                UserDefaults.standard.set(encodedOperations, forKey: "Operations")
+            }
+        }
+    }
     var allowedNumbers: [Int] {
         if isNegativesAllowed {
             return Array(-10 ... 10)
@@ -36,6 +42,11 @@ import Combine
         }
     }
     init() {
+            if let encodedOperations = UserDefaults.standard.data(forKey: "Operations") {
+                if let decodedOperations = try? JSONDecoder().decode([Operation].self, from: encodedOperations) {
+                    operations = decodedOperations
+                }
+            }
         resetCards()
         resetExampleCards()
         speechRecognizerSubscription = speechRecognizer.$transcript.sink {
